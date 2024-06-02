@@ -11,6 +11,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
@@ -26,19 +27,20 @@ public class InfectedWolfEntityRenderer extends MobEntityRenderer<InfectedWolfEn
     }
 
     @Override
-    public void render(InfectedWolfEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    public void render(@NotNull InfectedWolfEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         if (entity.isFurWet()) {
             float h = entity.getFurWetBrightnessMultiplier(g);
-            (this.model).setColorMultiplier(h, h, h);
+            this.model.setColorMultiplier(ColorHelper.Argb.fromFloats(1.0F, h, h, h));
         }
+
         super.render(entity, f, g, matrixStack, vertexConsumerProvider, i);
         if (entity.isFurWet()) {
-            (this.model).setColorMultiplier(1.0f, 1.0f, 1.0f);
+            this.model.setColorMultiplier(-1);
         }
     }
 
     @Override
     public Identifier getTexture(InfectedWolfEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_wolf.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_wolf.png");
     }
 }

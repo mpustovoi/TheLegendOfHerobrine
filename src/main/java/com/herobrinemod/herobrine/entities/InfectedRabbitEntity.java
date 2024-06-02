@@ -86,7 +86,7 @@ public class InfectedRabbitEntity extends InfectedEntity implements VariantHolde
         assert entity != null;
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 300, 1));
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 300, 1));
-        entity.initialize((ServerWorldAccess) this.getWorld(), getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null, null);
+        entity.initialize((ServerWorldAccess) this.getWorld(), getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null);
         ((RabbitEntity) entity).setVariant(this.getVariant());
     }
 
@@ -147,9 +147,9 @@ public class InfectedRabbitEntity extends InfectedEntity implements VariantHolde
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(RABBIT_TYPE, RabbitEntity.RabbitType.BROWN.getId());
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(RABBIT_TYPE, RabbitEntity.RabbitType.BROWN.getId());
     }
 
     @Override
@@ -278,13 +278,13 @@ public class InfectedRabbitEntity extends InfectedEntity implements VariantHolde
     public void setVariant(RabbitEntity.@NotNull RabbitType rabbitType) {
         this.dataTracker.set(RABBIT_TYPE, rabbitType.getId());
         if (rabbitType == RabbitEntity.RabbitType.EVIL && !this.hasCustomName()) {
-            this.setCustomName(Text.translatable(Util.createTranslationKey("entity", new Identifier("killer_bunny"))));
+            this.setCustomName(Text.translatable(Util.createTranslationKey("entity",Identifier.ofVanilla("killer_bunny"))));
         }
     }
 
     @Override
     @Nullable
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
         RabbitEntity.RabbitType rabbitType = InfectedRabbitEntity.getTypeFromPos(world, this.getBlockPos());
         if (entityData instanceof RabbitEntity.RabbitData) {
             rabbitType = ((RabbitEntity.RabbitData)entityData).type;
@@ -292,7 +292,7 @@ public class InfectedRabbitEntity extends InfectedEntity implements VariantHolde
             entityData = new RabbitEntity.RabbitData(rabbitType);
         }
         this.setVariant(rabbitType);
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
     private static RabbitEntity.RabbitType getTypeFromPos(@NotNull WorldAccess world, BlockPos pos) {

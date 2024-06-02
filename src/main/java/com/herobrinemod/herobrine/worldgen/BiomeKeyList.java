@@ -7,5 +7,5 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 
 public class BiomeKeyList {
-    public static final RegistryKey<Biome> CURSED_FOREST = RegistryKey.of(RegistryKeys.BIOME, new Identifier(HerobrineMod.MODID, "cursed_forest"));
+    public static final RegistryKey<Biome> CURSED_FOREST = RegistryKey.of(RegistryKeys.BIOME, Identifier.of(HerobrineMod.MODID, "cursed_forest"));
 }

@@ -18,6 +18,6 @@ public class InfectedMooshroomEyesFeatureRenderer extends EyesFeatureRenderer<In
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_mooshroom.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_mooshroom.png"));
     }
 }

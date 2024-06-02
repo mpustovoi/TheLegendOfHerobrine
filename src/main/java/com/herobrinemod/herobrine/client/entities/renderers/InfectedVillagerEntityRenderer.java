@@ -25,7 +25,7 @@ public class InfectedVillagerEntityRenderer extends MobEntityRenderer<InfectedVi
 
     @Override
     public Identifier getTexture(InfectedVillagerEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_villager.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_villager.png");
     }
 
     @Override

@@ -17,6 +17,6 @@ public class InfectedCamelEntityRenderer extends MobEntityRenderer<InfectedCamel
 
     @Override
     public Identifier getTexture(InfectedCamelEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_camel.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_camel.png");
     }
 }

@@ -15,6 +15,6 @@ public class InfectedAxolotlEyesFeatureRenderer extends EyesFeatureRenderer<Infe
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_axolotl.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_axolotl.png"));
     }
 }

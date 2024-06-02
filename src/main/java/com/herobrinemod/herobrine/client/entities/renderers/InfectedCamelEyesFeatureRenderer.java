@@ -15,6 +15,6 @@ public class InfectedCamelEyesFeatureRenderer extends EyesFeatureRenderer<Infect
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_camel.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_camel.png"));
     }
 }

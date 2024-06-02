@@ -2,12 +2,16 @@ package com.herobrinemod.herobrine.entities;
 
 import com.herobrinemod.herobrine.HerobrineMod;
 import com.herobrinemod.herobrine.items.ItemList;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.projectile.thrown.PotionEntity;
+import net.minecraft.loot.LootTable;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -25,13 +29,8 @@ public abstract class HerobrineEntity extends HostileEntity {
         ((MobNavigation)this.getNavigation()).setCanPathThroughDoors(true);
     }
 
-    @Override
-    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-        return 1.62f;
-    }
-
     public static boolean canSpawn(EntityType<? extends HerobrineEntity> type, @NotNull ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        if(world.toServerWorld().getDimensionKey() != DimensionTypes.OVERWORLD && random.nextInt(15) > 1 || world.toServerWorld().getDimensionKey() == DimensionTypes.THE_END && pos.getX() < 1000 && pos.getZ() < 1000 || world.getBiome(pos).matchesId(BiomeKeys.MUSHROOM_FIELDS.getValue()) && random.nextInt(100) > 1  || world.getBiome(pos).matchesId(BiomeKeys.DEEP_DARK.getValue()) && random.nextInt(100) > 1) {
+        if(world.toServerWorld().getDimensionEntry() != DimensionTypes.OVERWORLD && random.nextInt(15) > 1 || world.toServerWorld().getDimensionEntry() == DimensionTypes.THE_END && pos.getX() < 1000 && pos.getZ() < 1000 || world.getBiome(pos).matchesId(BiomeKeys.MUSHROOM_FIELDS.getValue()) && random.nextInt(100) > 1  || world.getBiome(pos).matchesId(BiomeKeys.DEEP_DARK.getValue()) && random.nextInt(100) > 1) {
             return false;
         }
         return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && HerobrineSpawnHelper.canHerobrineSpawn();
@@ -46,7 +45,7 @@ public abstract class HerobrineEntity extends HostileEntity {
     }
 
     public static boolean canSpawnPeacefulMode(EntityType<? extends HerobrineEntity> type, @NotNull ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, net.minecraft.util.math.random.Random random) {
-        if(world.toServerWorld().getDimensionKey() != DimensionTypes.OVERWORLD && random.nextInt(15) > 1 || world.toServerWorld().getDimensionKey() == DimensionTypes.THE_END && pos.getX() < 1000 && pos.getZ() < 1000 || world.getBiome(pos).matchesId(BiomeKeys.MUSHROOM_FIELDS.getValue()) && random.nextInt(100) > 1 || world.getBiome(pos).matchesId(BiomeKeys.DEEP_DARK.getValue()) && random.nextInt(100) > 1) {
+        if(world.toServerWorld().getDimensionEntry() != DimensionTypes.OVERWORLD && random.nextInt(15) > 1 || world.toServerWorld().getDimensionEntry() == DimensionTypes.THE_END && pos.getX() < 1000 && pos.getZ() < 1000 || world.getBiome(pos).matchesId(BiomeKeys.MUSHROOM_FIELDS.getValue()) && random.nextInt(100) > 1 || world.getBiome(pos).matchesId(BiomeKeys.DEEP_DARK.getValue()) && random.nextInt(100) > 1) {
             return false;
         }
         return isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && HerobrineSpawnHelper.canHerobrineSpawn();
@@ -88,14 +87,14 @@ public abstract class HerobrineEntity extends HostileEntity {
     }
 
     @Override
-    public Identifier getLootTableId() {
-        return new Identifier(HerobrineMod.MODID, "entities/herobrine");
+    public RegistryKey<LootTable> getLootTableId() {
+        return RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(HerobrineMod.MODID, "entities/herobrine"));
     }
 
     @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
-        if (random.nextInt(100) <= 20 * (lootingMultiplier + 1) && !(this instanceof FakeHerobrineMageEntity)) {
+    protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
+        super.dropEquipment(world, source, causedByPlayer);
+        if (random.nextFloat() < EnchantmentHelper.getEquipmentDropChance(world, (LivingEntity) source.getAttacker(), source, 20)) {
             this.dropItem(ItemList.CURSED_DUST);
         }
     }

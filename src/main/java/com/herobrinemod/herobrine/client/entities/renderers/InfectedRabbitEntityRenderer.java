@@ -15,14 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class InfectedRabbitEntityRenderer extends MobEntityRenderer<InfectedRabbitEntity, InfectedRabbitEntityModel> {
-    private static final Identifier BROWN_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/brown.png");
-    private static final Identifier WHITE_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/white.png");
-    private static final Identifier BLACK_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/black.png");
-    private static final Identifier GOLD_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/gold.png");
-    private static final Identifier SALT_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/salt.png");
-    private static final Identifier WHITE_SPLOTCHED_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/white_splotched.png");
-    private static final Identifier TOAST_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/toast.png");
-    private static final Identifier CAERBANNOG_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/infected_rabbit/caerbannog.png");
+    private static final Identifier BROWN_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/brown.png");
+    private static final Identifier WHITE_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/white.png");
+    private static final Identifier BLACK_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/black.png");
+    private static final Identifier GOLD_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/gold.png");
+    private static final Identifier SALT_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/salt.png");
+    private static final Identifier WHITE_SPLOTCHED_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/white_splotched.png");
+    private static final Identifier TOAST_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/toast.png");
+    private static final Identifier CAERBANNOG_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/infected_rabbit/caerbannog.png");
     public InfectedRabbitEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new InfectedRabbitEntityModel(context.getPart(HerobrineModelLayers.INFECTED_RABBIT_MODEL_LAYER)), 0.3f);
         this.addFeature(new InfectedRabbitEyesFeatureRenderer(this));
@@ -34,7 +34,7 @@ public class InfectedRabbitEntityRenderer extends MobEntityRenderer<InfectedRabb
         if ("Toast".equals(string)) {
             return TOAST_TEXTURE;
         } else if(entity.getVariant().equals(RabbitEntity.RabbitType.EVIL)) {
-            InfectedRabbitEyesFeatureRenderer.EYES_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_rabbit/caerbannog.png");
+            InfectedRabbitEyesFeatureRenderer.EYES_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_rabbit/caerbannog.png");
         }
 
         return switch (entity.getVariant()) {

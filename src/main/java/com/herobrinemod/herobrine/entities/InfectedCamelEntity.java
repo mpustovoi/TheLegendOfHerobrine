@@ -46,7 +46,6 @@ public class InfectedCamelEntity extends InfectedEntity {
 
     public InfectedCamelEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
-        this.setStepHeight(1.5f);
         this.experiencePoints = 3;
         this.moveControl = new InfectedCamelMoveControl();
         MobNavigation mobNavigation = (MobNavigation)this.getNavigation();
@@ -73,6 +72,7 @@ public class InfectedCamelEntity extends InfectedEntity {
 
     public static DefaultAttributeContainer.Builder registerAttributes() {
         return createHostileAttributes()
+                .add(EntityAttributes.GENERIC_STEP_HEIGHT, 1.5)
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 32.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16.0)
@@ -80,13 +80,8 @@ public class InfectedCamelEntity extends InfectedEntity {
     }
 
     @Override
-    public EntityDimensions getDimensions(EntityPose pose) {
-        return pose == EntityPose.SITTING ? SITTING_DIMENSIONS.scaled(this.getScaleFactor()) : super.getDimensions(pose);
-    }
-
-    @Override
-    protected float getActiveEyeHeight(EntityPose pose, @NotNull EntityDimensions dimensions) {
-        return dimensions.height - 0.1f * this.getScaleFactor();
+    public EntityDimensions getBaseDimensions(EntityPose pose) {
+        return pose == EntityPose.SITTING ? SITTING_DIMENSIONS.scaled(this.getScaleFactor()) : super.getBaseDimensions(pose);
     }
 
     private void updateAnimations() {
@@ -134,16 +129,16 @@ public class InfectedCamelEntity extends InfectedEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(LAST_POSE_TICK, 0L);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(LAST_POSE_TICK, 0L);
     }
 
     @Override
-    public EntityData initialize(@NotNull ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(@NotNull ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
         this.initLastPoseTick(world.toServerWorld().getTime());
         this.goalSelector.add(6, wanderAroundFarGoal);
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
     @Override
@@ -194,33 +189,35 @@ public class InfectedCamelEntity extends InfectedEntity {
     }
 
     private double getPassengerAttachmentY(float tickDelta, @NotNull EntityDimensions dimensions, float scaleFactor) {
-        double d = dimensions.height - 0.375f * scaleFactor;
-        float f = scaleFactor * 1.43f;
-        float g = f - scaleFactor * 0.2f;
+        double d = dimensions.height() - 0.375F * scaleFactor;
+        float f = scaleFactor * 1.43F;
+        float g = f - scaleFactor * 0.2F;
         float h = f - g;
         boolean bl = this.isChangingPose();
         boolean bl2 = this.isSitting();
         if (bl) {
-            float k;
+            int i = bl2 ? 40 : 52;
             int j;
-            int i;
-            i = bl2 ? 40 : 52;
+            float k;
             if (bl2) {
                 j = 28;
-                k = 0.5f;
+                k = 0.5F;
             } else {
                 j = 24;
-                k = 0.6f;
+                k = 0.6F;
             }
-            float l = MathHelper.clamp((float)this.getLastPoseTickDelta() + tickDelta, 0.0f, (float)i);
+
+            float l = MathHelper.clamp((float)this.getLastPoseTickDelta() + tickDelta, 0.0F, (float)i);
             boolean bl3 = l < (float)j;
             float m = bl3 ? l / (float)j : (l - (float)j) / (float)(i - j);
-            float n2 = f - k * g;
-            d += bl2 ? (double)MathHelper.lerp(m, bl3 ? f : n2, bl3 ? n2 : h) : (double)MathHelper.lerp(m, bl3 ? h - f : h - n2, bl3 ? h - n2 : 0.0f);
+            float n = f - k * g;
+            d += bl2 ? (double)MathHelper.lerp(m, bl3 ? f : n, bl3 ? n : h) : (double)MathHelper.lerp(m, bl3 ? h - f : h - n, bl3 ? h - n : 0.0F);
         }
+
         if (bl2 && !bl) {
             d += h;
         }
+
         return d;
     }
 
@@ -228,7 +225,7 @@ public class InfectedCamelEntity extends InfectedEntity {
     public Vec3d getLeashOffset(float tickDelta) {
         EntityDimensions entityDimensions = this.getDimensions(this.getPose());
         float f = this.getScaleFactor();
-        return new Vec3d(0.0, this.getPassengerAttachmentY(tickDelta, entityDimensions, f) - (double)(0.2f * f), entityDimensions.width * 0.56f);
+        return new Vec3d(0.0, this.getPassengerAttachmentY(tickDelta, entityDimensions, f) - (double)(0.2F * f), entityDimensions.width() * 0.56F);
     }
 
     private void clampHeadYaw(@NotNull Entity entity) {
@@ -301,13 +298,6 @@ public class InfectedCamelEntity extends InfectedEntity {
     @Override
     protected BodyControl createBodyControl() {
         return new InfectedCamelBodyControl(this);
-    }
-
-    @Override
-    protected void updateForLeashLength(float leashLength) {
-        if (leashLength > 6.0f && this.isSitting() && !this.isChangingPose() && this.canChangePose()) {
-            this.startStanding();
-        }
     }
 
     public boolean isStationary() {

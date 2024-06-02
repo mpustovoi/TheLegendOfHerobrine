@@ -26,6 +26,6 @@ public class InfectedChickenEntityRenderer extends MobEntityRenderer<InfectedChi
 
     @Override
     public Identifier getTexture(InfectedChickenEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_chicken.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_chicken.png");
     }
 }

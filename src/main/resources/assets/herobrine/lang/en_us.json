@@ -60,12 +60,13 @@
   "item.herobrine.herobrine_stalker_spawn_egg": "Herobrine Stalker Spawn Egg",
   "entity.herobrine.herobrine_stalker": "Herobrine",
   "item.herobrine.music_disc_dog": "Music Disc",
-  "item.herobrine.music_disc_dog.desc": "C418 - dog",
+  "jukebox_song.herobrine.dog": "C418 - dog",
   "herobrine.summon": "<Herobrine> You have no idea what you have done!",
   "herobrine.unsummon": "<Herobrine> I shall return!",
   "item.herobrine.cursed_diamond_sword.kills": "Kills:",
   "entity.herobrine.infected_axolotl": "Infected Axolotl",
   "item.herobrine.infected_axolotl_spawn_egg": "Infected Axolotl Spawn Egg",
   "entity.herobrine.infected_camel": "Infected Camel",
-  "item.herobrine.infected_camel_spawn_egg": "Infected Camel Spawn Egg"
+  "item.herobrine.infected_camel_spawn_egg": "Infected Camel Spawn Egg",
+  "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine"
 }

@@ -4,6 +4,7 @@ import com.herobrinemod.herobrine.savedata.ConfigHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemUsageContext;
@@ -22,8 +23,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class CursedDiamondHoeItem extends HoeItem {
-    public CursedDiamondHoeItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+    public CursedDiamondHoeItem(ToolMaterial material, Settings settings) {
+        super(material, settings);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class CursedDiamondHoeItem extends HoeItem {
 
             if(!player.isCreative()) {
                 player.getItemCooldownManager().set(this, ConfigHandler.getHerobrineConfig().readInt("CursedDiamondHoeMagicCooldownTicks"));
-                context.getStack().damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), player, p -> p.sendToolBreakStatus(context.getHand()));
+                context.getStack().damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), player, LivingEntity.getSlotForHand(context.getHand()));
             }
 
             if(fertilized) {

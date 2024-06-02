@@ -2,7 +2,10 @@ package com.herobrinemod.herobrine.entities;
 
 import com.herobrinemod.herobrine.items.ItemList;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -77,14 +80,14 @@ public class InfectedLlamaEntity extends InfectedEntity implements RangedAttackM
         assert entity != null;
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 300, 1));
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 300, 1));
-        entity.initialize((ServerWorldAccess) this.getWorld(), this.getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null, null);
+        entity.initialize((ServerWorldAccess) this.getWorld(), this.getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null);
         ((LlamaEntity) entity).setVariant(LlamaEntity.Variant.byId(this.getVariant().id));
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(VARIANT, 0);
+    protected void initDataTracker(DataTracker.@NotNull Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(VARIANT, 0);
     }
 
     @Override
@@ -99,14 +102,9 @@ public class InfectedLlamaEntity extends InfectedEntity implements RangedAttackM
         this.setVariant(InfectedLlamaEntity.Variant.byId(nbt.getInt("Variant")));
     }
 
-    @Override
-    protected float getActiveEyeHeight(EntityPose pose, @NotNull EntityDimensions dimensions) {
-        return dimensions.height * 0.95f;
-    }
-
     @Nullable
     @Override
-    public EntityData initialize(@NotNull ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(@NotNull ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
         Random random = world.getRandom();
         InfectedLlamaEntity.Variant variant;
         if (entityData instanceof InfectedLlamaEntity.LlamaData) {
@@ -117,7 +115,7 @@ public class InfectedLlamaEntity extends InfectedEntity implements RangedAttackM
         }
 
         this.setVariant(variant);
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
     public InfectedLlamaEntity.Variant getVariant() {

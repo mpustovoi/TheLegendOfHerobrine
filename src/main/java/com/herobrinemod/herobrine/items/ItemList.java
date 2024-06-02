@@ -1,36 +1,39 @@
 package com.herobrinemod.herobrine.items;
 
+import com.herobrinemod.herobrine.HerobrineMod;
 import com.herobrinemod.herobrine.blocks.BlockList;
+import com.herobrinemod.herobrine.component.DataComponentTypeList;
 import com.herobrinemod.herobrine.entities.EntityTypeList;
 import com.herobrinemod.herobrine.items.material.ArmorMaterialList;
 import com.herobrinemod.herobrine.items.material.ToolMaterialList;
-import com.herobrinemod.herobrine.sounds.SoundList;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 public class ItemList {
     // Initialize items
-    public static final Item BEDROCK_SWORD = new SwordItem(ToolMaterialList.BEDROCK_TOOL_MATERIAL, 0, -2.4f, new Item.Settings().rarity(Rarity.EPIC));
+    public static final Item BEDROCK_SWORD = new SwordItem(ToolMaterialList.BEDROCK, new Item.Settings().rarity(Rarity.EPIC).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterialList.BEDROCK, 0, -2.4f)));
     public static final Item CURSED_DIAMOND = new Item(new Item.Settings());
     public static final Item CURSED_DUST = new Item(new Item.Settings());
     public static final Item PURIFIED_DIAMOND = new Item(new Item.Settings());
-    public static final Item CURSED_DIAMOND_HELMET = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Settings());
-    public static final Item CURSED_DIAMOND_CHESTPLATE = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Settings());
-    public static final Item CURSED_DIAMOND_LEGGINGS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Settings());
-    public static final Item CURSED_DIAMOND_BOOTS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, new Item.Settings());
-    public static final Item CURSED_DIAMOND_SWORD = new CursedDiamondSwordItem(ToolMaterialList.CURSED_DIAMOND_TOOL_MATERIAL, 3, -2.4f, new Item.Settings());
-    public static final Item CURSED_DIAMOND_AXE = new CursedDiamondAxeItem(ToolMaterialList.CURSED_DIAMOND_TOOL_MATERIAL, 5, -3.0f, new Item.Settings());
-    public static final Item CURSED_DIAMOND_PICKAXE = new PickaxeItem(ToolMaterialList.CURSED_DIAMOND_TOOL_MATERIAL, 1, -2.8f, new Item.Settings());
-    public static final Item CURSED_DIAMOND_SHOVEL = new ShovelItem(ToolMaterialList.CURSED_DIAMOND_TOOL_MATERIAL, 1.5f, -3.0f, new Item.Settings());
-    public static final Item CURSED_DIAMOND_HOE = new CursedDiamondHoeItem(ToolMaterialList.CURSED_DIAMOND_TOOL_MATERIAL, -4, 0.0f, new Item.Settings());
-    public static final Item MUSIC_DISC_DOG = new MusicDiscItem(2, SoundList.MUSIC_DISC_DOG, new Item.Settings().rarity(Rarity.RARE).maxCount(1), 145);
+    public static final Item CURSED_DIAMOND_HELMET = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.HELMET, new Item.Settings());
+    public static final Item CURSED_DIAMOND_CHESTPLATE = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.CHESTPLATE, new Item.Settings());
+    public static final Item CURSED_DIAMOND_LEGGINGS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.LEGGINGS, new Item.Settings());
+    public static final Item CURSED_DIAMOND_BOOTS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.BOOTS, new Item.Settings());
+    public static final Item CURSED_DIAMOND_SWORD = new CursedDiamondSwordItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().component(DataComponentTypeList.KILLS, 0).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 3, -2.4f)));
+    public static final Item CURSED_DIAMOND_AXE = new CursedDiamondAxeItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(AxeItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 5.0f, -3.0f)));
+    public static final Item CURSED_DIAMOND_PICKAXE = new PickaxeItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 1.0f, -2.8f)));
+    public static final Item CURSED_DIAMOND_SHOVEL = new ShovelItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 1.5f, -3.0f)));
+    public static final Item CURSED_DIAMOND_HOE = new CursedDiamondHoeItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(HoeItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, -4.0f, -0.0f)));
+    public static final Item MUSIC_DISC_DOG = new Item(new Item.Settings().rarity(Rarity.RARE).maxCount(1).jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(HerobrineMod.MODID, "dog"))));
     public static final Item HOLY_WATER = new HolyWaterItem(new Item.Settings());
     public static final Item UNHOLY_WATER = new UnholyWaterItem(new Item.Settings());
-    public static final Item CURSED_DIAMOND_BLOCK = new BlockItem(BlockList.CURSED_DIAMOND_BLOCK, new FabricItemSettings());
-    public static final Item PURIFIED_DIAMOND_BLOCK = new BlockItem(BlockList.PURIFIED_DIAMOND_BLOCK, new FabricItemSettings());
-    public static final Item HEROBRINE_ALTAR = new BlockItem(BlockList.HEROBRINE_ALTAR_BLOCK, new FabricItemSettings().rarity(Rarity.UNCOMMON));
-    public static final Item HEROBRINE_STATUE = new BlockItem(BlockList.HEROBRINE_STATUE_BLOCK, new FabricItemSettings());
+    public static final Item CURSED_DIAMOND_BLOCK = new BlockItem(BlockList.CURSED_DIAMOND_BLOCK, new Item.Settings());
+    public static final Item PURIFIED_DIAMOND_BLOCK = new BlockItem(BlockList.PURIFIED_DIAMOND_BLOCK, new Item.Settings());
+    public static final Item HEROBRINE_ALTAR = new BlockItem(BlockList.HEROBRINE_ALTAR_BLOCK, new Item.Settings().rarity(Rarity.UNCOMMON));
+    public static final Item HEROBRINE_STATUE = new BlockItem(BlockList.HEROBRINE_STATUE_BLOCK, new Item.Settings());
     public static final SpawnEggItem HEROBRINE_WARRIOR_SPAWN_EGG = new SpawnEggItem(EntityTypeList.HEROBRINE_WARRIOR, 0x000000, 0xFF0000, new Item.Settings());
     public static final SpawnEggItem HEROBRINE_SPY_SPAWN_EGG = new SpawnEggItem(EntityTypeList.HEROBRINE_SPY, 0x000000, 0x00FF00, new Item.Settings());
     public static final SpawnEggItem HEROBRINE_MAGE_SPAWN_EGG = new SpawnEggItem(EntityTypeList.HEROBRINE_MAGE, 0x000000, 0x0000FF, new Item.Settings());

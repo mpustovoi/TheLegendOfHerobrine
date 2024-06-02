@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class InfectedRabbitEyesFeatureRenderer extends EyesFeatureRenderer<InfectedRabbitEntity, InfectedRabbitEntityModel> {
-    public static Identifier EYES_TEXTURE = new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_rabbit/infected_rabbit.png");
+    public static Identifier EYES_TEXTURE = Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_rabbit/infected_rabbit.png");
     public InfectedRabbitEyesFeatureRenderer(FeatureRendererContext<InfectedRabbitEntity, InfectedRabbitEntityModel> featureRendererContext) {
         super(featureRendererContext);
     }

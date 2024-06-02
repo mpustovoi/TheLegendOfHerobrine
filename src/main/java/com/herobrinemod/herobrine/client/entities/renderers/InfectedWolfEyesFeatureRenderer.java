@@ -18,6 +18,6 @@ public class InfectedWolfEyesFeatureRenderer extends EyesFeatureRenderer<Infecte
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_wolf.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_wolf.png"));
     }
 }

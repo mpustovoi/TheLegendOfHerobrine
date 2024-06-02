@@ -18,8 +18,8 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class InfectedMooshroomEntityRenderer extends MobEntityRenderer<InfectedMooshroomEntity, InfectedCowEntityModel<InfectedMooshroomEntity>> {
     private static final Map<InfectedMooshroomEntity.Type, Identifier> TEXTURES = Util.make(Maps.newHashMap(), map -> {
-        map.put(InfectedMooshroomEntity.Type.BROWN, new Identifier(HerobrineMod.MODID, "textures/entity/infected_brown_mooshroom.png"));
-        map.put(InfectedMooshroomEntity.Type.RED, new Identifier(HerobrineMod.MODID, "textures/entity/infected_red_mooshroom.png"));
+        map.put(InfectedMooshroomEntity.Type.BROWN, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_brown_mooshroom.png"));
+        map.put(InfectedMooshroomEntity.Type.RED, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_red_mooshroom.png"));
     });
     public InfectedMooshroomEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new InfectedCowEntityModel<>(context.getPart(HerobrineModelLayers.INFECTED_COW_MODEL_LAYER)), 0.7f);

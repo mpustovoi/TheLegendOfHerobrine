@@ -1,6 +1,7 @@
 {
     "pack": {
-        "description": "Resources for The Legend of Herobrine",
-        "pack_format": 15
+        "pack_format": 16,
+		"supported_formats": [16, 47],
+        "description": "Resources and Data For The Legend of Herobrine"
     }
 }

@@ -1,8 +1,11 @@
 package com.herobrinemod.herobrine.items.material;
 
+import com.herobrinemod.herobrine.blocks.BlockTagList;
 import com.herobrinemod.herobrine.items.ItemList;
+import net.minecraft.block.Block;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 
 public class CursedDiamondToolMaterial implements ToolMaterial {
     @Override
@@ -17,12 +20,12 @@ public class CursedDiamondToolMaterial implements ToolMaterial {
 
     @Override
     public float getAttackDamage() {
-        return 4.0f;
+        return 3.0f;
     }
 
     @Override
-    public int getMiningLevel() {
-        return 4;
+    public TagKey<Block> getInverseTag() {
+        return BlockTagList.INCORRECT_FOR_CURSED_DIAMOND_TOOL;
     }
 
     @Override

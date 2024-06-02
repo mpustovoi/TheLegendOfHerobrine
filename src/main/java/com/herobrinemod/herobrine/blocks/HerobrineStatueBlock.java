@@ -3,7 +3,6 @@ package com.herobrinemod.herobrine.blocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -62,12 +61,6 @@ public class HerobrineStatueBlock extends Block implements Waterloggable{
         }
 
         return EAST_WEST_TOP;
-    }
-
-
-    @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-        return false;
     }
 
     @Override
@@ -133,10 +126,10 @@ public class HerobrineStatueBlock extends Block implements Waterloggable{
     }
 
     @Override
-    public void onBreak(@NotNull World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(@NotNull World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!world.isClient && player.isCreative() || !player.getMainHandStack().isSuitableFor(state)) {
             TallPlantBlock.onBreakInCreative(world, pos, state, player);
         }
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 }

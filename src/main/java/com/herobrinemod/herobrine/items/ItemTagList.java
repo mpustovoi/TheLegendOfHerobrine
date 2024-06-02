@@ -7,5 +7,5 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 public class ItemTagList {
-    public static final TagKey<Item> ACTIVATES_HEROBRINE_ALTAR = TagKey.of(RegistryKeys.ITEM, new Identifier(HerobrineMod.MODID, "activates_herobrine_altar"));
+    public static final TagKey<Item> ACTIVATES_HEROBRINE_ALTAR = TagKey.of(RegistryKeys.ITEM, Identifier.of(HerobrineMod.MODID, "activates_herobrine_altar"));
 }

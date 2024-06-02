@@ -1,7 +1,6 @@
 {
   "values": [
     "#minecraft:is_beach",
-    "#minecraft:is_river",
     "#minecraft:is_taiga",
     "#minecraft:is_forest",
     "minecraft:mushroom_fields",
@@ -17,6 +16,7 @@
     "minecraft:stony_shore",
     "#minecraft:is_mountain",
     "#minecraft:is_jungle",
-    "minecraft:desert"
+    "minecraft:desert",
+    "minecraft:ice_spikes"
   ]
 }

@@ -16,6 +16,6 @@ public class HerobrineEyesFeatureRenderer extends EyesFeatureRenderer {
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/herobrine.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/herobrine.png"));
     }
 }

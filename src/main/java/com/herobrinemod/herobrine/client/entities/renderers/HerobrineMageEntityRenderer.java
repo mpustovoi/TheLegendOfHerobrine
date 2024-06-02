@@ -22,7 +22,7 @@ public class HerobrineMageEntityRenderer extends MobEntityRenderer<HerobrineEnti
 
     @Override
     public Identifier getTexture(HerobrineEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/herobrine.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/herobrine.png");
     }
 
     @Override

@@ -34,11 +34,6 @@ public class UnholyWaterEntity extends ThrownItemEntity {
     }
 
     @Override
-    public ItemStack getItem() {
-        return new ItemStack(ItemList.UNHOLY_WATER);
-    }
-
-    @Override
     public void handleStatus(byte status) {
         if (status == 3) {
             for (int i = 0; i < 8; ++i) {
@@ -55,7 +50,7 @@ public class UnholyWaterEntity extends ThrownItemEntity {
             List<LivingEntity> affectedEntities = this.getWorld().getEntitiesByClass(LivingEntity.class, effectBox, EntityPredicates.VALID_LIVING_ENTITY);
             if(!affectedEntities.isEmpty()) {
                 for(LivingEntity entity : affectedEntities) {
-                    if(entity instanceof HerobrineEntity || entity instanceof InfectedEntity) {
+                    if(entity.getType().isIn(EntityTypeTagList.IS_HEROBRINE) || entity.getType().isIn(EntityTypeTagList.IS_INFECTED_BY_HEROBRINE)) {
                         entity.heal(10.0f);
                     } else {
                         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 300, 1));

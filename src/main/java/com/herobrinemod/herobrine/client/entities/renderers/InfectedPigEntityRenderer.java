@@ -19,6 +19,6 @@ public class InfectedPigEntityRenderer extends MobEntityRenderer<InfectedPigEnti
 
     @Override
     public Identifier getTexture(InfectedPigEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_pig.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_pig.png");
     }
 }

@@ -18,6 +18,6 @@ public class InfectedDonkeyEyesFeatureRenderer extends EyesFeatureRenderer<Infec
 
     @Override
     public RenderLayer getEyesTexture() {
-        return RenderLayer.getEyes(new Identifier(HerobrineMod.MODID, "textures/entity/eyes/infected_donkey.png"));
+        return RenderLayer.getEyes(Identifier.of(HerobrineMod.MODID, "textures/entity/eyes/infected_donkey.png"));
     }
 }

@@ -15,11 +15,13 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnLocationTypes;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
@@ -45,61 +47,62 @@ public class HerobrineMod implements ModInitializer {
 
     // Register sounds
     private void registerSounds() {
-        Registry.register(SOUND_EVENT, SoundList.MUSIC_DISC_DOG_IDENTIFIER, SoundList.MUSIC_DISC_DOG);
+        Registry.register(SOUND_EVENT, SoundList.MUSIC_DISC_DOG, SoundEvent.of(SoundList.MUSIC_DISC_DOG));
         Registry.register(SOUND_EVENT, SoundList.HEROBRINE_ALTAR_CURSED_IDENTIFIER, SoundList.HEROBRINE_ALTAR_CURSED);
         Registry.register(SOUND_EVENT, SoundList.HEROBRINE_ALTAR_PURIFIED_IDENTIFIER, SoundList.HEROBRINE_ALTAR_PURIFIED);
+
     }
 
     // Register blocks
     private void registerBlocks() {
-        Registry.register(BLOCK, new Identifier(MODID, "herobrine_altar"), BlockList.HEROBRINE_ALTAR_BLOCK);
-        Registry.register(BLOCK, new Identifier(MODID, "cursed_diamond_block"), BlockList.CURSED_DIAMOND_BLOCK);
-        Registry.register(BLOCK, new Identifier(MODID, "purified_diamond_block"), BlockList.PURIFIED_DIAMOND_BLOCK);
-        Registry.register(BLOCK, new Identifier(MODID, "herobrine_statue"), BlockList.HEROBRINE_STATUE_BLOCK);
+        Registry.register(BLOCK, Identifier.of(MODID, "herobrine_altar"), BlockList.HEROBRINE_ALTAR_BLOCK);
+        Registry.register(BLOCK, Identifier.of(MODID, "cursed_diamond_block"), BlockList.CURSED_DIAMOND_BLOCK);
+        Registry.register(BLOCK, Identifier.of(MODID, "purified_diamond_block"), BlockList.PURIFIED_DIAMOND_BLOCK);
+        Registry.register(BLOCK, Identifier.of(MODID, "herobrine_statue"), BlockList.HEROBRINE_STATUE_BLOCK);
     }
 
     // Register items
     private void registerItems() {
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_statue"), ItemList.HEROBRINE_STATUE);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_altar"), ItemList.HEROBRINE_ALTAR);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_block"), ItemList.CURSED_DIAMOND_BLOCK);
-        Registry.register(ITEM, new Identifier(MODID, "purified_diamond_block"), ItemList.PURIFIED_DIAMOND_BLOCK);
-        Registry.register(ITEM, new Identifier(MODID, "bedrock_sword"), ItemList.BEDROCK_SWORD);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_sword"), ItemList.CURSED_DIAMOND_SWORD);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_shovel"), ItemList.CURSED_DIAMOND_SHOVEL);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_pickaxe"), ItemList.CURSED_DIAMOND_PICKAXE);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_axe"), ItemList.CURSED_DIAMOND_AXE);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_hoe"), ItemList.CURSED_DIAMOND_HOE);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_helmet"), ItemList.CURSED_DIAMOND_HELMET);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_chestplate"), ItemList.CURSED_DIAMOND_CHESTPLATE);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_leggings"), ItemList.CURSED_DIAMOND_LEGGINGS);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond_boots"), ItemList.CURSED_DIAMOND_BOOTS);
-        Registry.register(ITEM, new Identifier(MODID, "holy_water"), ItemList.HOLY_WATER);
-        Registry.register(ITEM, new Identifier(MODID, "unholy_water"), ItemList.UNHOLY_WATER);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_dust"), ItemList.CURSED_DUST);
-        Registry.register(ITEM, new Identifier(MODID, "cursed_diamond"), ItemList.CURSED_DIAMOND);
-        Registry.register(ITEM, new Identifier(MODID, "purified_diamond"), ItemList.PURIFIED_DIAMOND);
-        Registry.register(ITEM, new Identifier(MODID, "music_disc_dog"), ItemList.MUSIC_DISC_DOG);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_warrior_spawn_egg"), ItemList.HEROBRINE_WARRIOR_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_spy_spawn_egg"), ItemList.HEROBRINE_SPY_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_mage_spawn_egg"), ItemList.HEROBRINE_MAGE_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_builder_spawn_egg"), ItemList.HEROBRINE_BUILDER_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "herobrine_stalker_spawn_egg"), ItemList.HEROBRINE_STALKER_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_pig_spawn_egg"), ItemList.INFECTED_PIG_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_cow_spawn_egg"), ItemList.INFECTED_COW_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_villager_spawn_egg"), ItemList.INFECTED_VILLAGER_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_chicken_spawn_egg"), ItemList.INFECTED_CHICKEN_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_sheep_spawn_egg"), ItemList.INFECTED_SHEEP_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_bat_spawn_egg"), ItemList.INFECTED_BAT_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_wolf_spawn_egg"), ItemList.INFECTED_WOLF_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_mooshroom_spawn_egg"), ItemList.INFECTED_MOOSHROOM_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_donkey_spawn_egg"), ItemList.INFECTED_DONKEY_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_horse_spawn_egg"), ItemList.INFECTED_HORSE_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_llama_spawn_egg"), ItemList.INFECTED_LLAMA_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_rabbit_spawn_egg"), ItemList.INFECTED_RABBIT_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "survivor_spawn_egg"), ItemList.SURVIVOR_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_axolotl_spawn_egg"), ItemList.INFECTED_AXOLOTL_SPAWN_EGG);
-        Registry.register(ITEM, new Identifier(MODID, "infected_camel_spawn_egg"), ItemList.INFECTED_CAMEL_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_statue"), ItemList.HEROBRINE_STATUE);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_altar"), ItemList.HEROBRINE_ALTAR);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_block"), ItemList.CURSED_DIAMOND_BLOCK);
+        Registry.register(ITEM, Identifier.of(MODID, "purified_diamond_block"), ItemList.PURIFIED_DIAMOND_BLOCK);
+        Registry.register(ITEM, Identifier.of(MODID, "bedrock_sword"), ItemList.BEDROCK_SWORD);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_sword"), ItemList.CURSED_DIAMOND_SWORD);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_shovel"), ItemList.CURSED_DIAMOND_SHOVEL);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_pickaxe"), ItemList.CURSED_DIAMOND_PICKAXE);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_axe"), ItemList.CURSED_DIAMOND_AXE);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_hoe"), ItemList.CURSED_DIAMOND_HOE);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_helmet"), ItemList.CURSED_DIAMOND_HELMET);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_chestplate"), ItemList.CURSED_DIAMOND_CHESTPLATE);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_leggings"), ItemList.CURSED_DIAMOND_LEGGINGS);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond_boots"), ItemList.CURSED_DIAMOND_BOOTS);
+        Registry.register(ITEM, Identifier.of(MODID, "holy_water"), ItemList.HOLY_WATER);
+        Registry.register(ITEM, Identifier.of(MODID, "unholy_water"), ItemList.UNHOLY_WATER);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_dust"), ItemList.CURSED_DUST);
+        Registry.register(ITEM, Identifier.of(MODID, "cursed_diamond"), ItemList.CURSED_DIAMOND);
+        Registry.register(ITEM, Identifier.of(MODID, "purified_diamond"), ItemList.PURIFIED_DIAMOND);
+        Registry.register(ITEM, Identifier.of(MODID, "music_disc_dog"), ItemList.MUSIC_DISC_DOG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_warrior_spawn_egg"), ItemList.HEROBRINE_WARRIOR_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_spy_spawn_egg"), ItemList.HEROBRINE_SPY_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_mage_spawn_egg"), ItemList.HEROBRINE_MAGE_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_builder_spawn_egg"), ItemList.HEROBRINE_BUILDER_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "herobrine_stalker_spawn_egg"), ItemList.HEROBRINE_STALKER_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_pig_spawn_egg"), ItemList.INFECTED_PIG_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_cow_spawn_egg"), ItemList.INFECTED_COW_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_villager_spawn_egg"), ItemList.INFECTED_VILLAGER_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_chicken_spawn_egg"), ItemList.INFECTED_CHICKEN_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_sheep_spawn_egg"), ItemList.INFECTED_SHEEP_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_bat_spawn_egg"), ItemList.INFECTED_BAT_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_wolf_spawn_egg"), ItemList.INFECTED_WOLF_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_mooshroom_spawn_egg"), ItemList.INFECTED_MOOSHROOM_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_donkey_spawn_egg"), ItemList.INFECTED_DONKEY_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_horse_spawn_egg"), ItemList.INFECTED_HORSE_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_llama_spawn_egg"), ItemList.INFECTED_LLAMA_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_rabbit_spawn_egg"), ItemList.INFECTED_RABBIT_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "survivor_spawn_egg"), ItemList.SURVIVOR_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_axolotl_spawn_egg"), ItemList.INFECTED_AXOLOTL_SPAWN_EGG);
+        Registry.register(ITEM, Identifier.of(MODID, "infected_camel_spawn_egg"), ItemList.INFECTED_CAMEL_SPAWN_EGG);
     }
 
     // Register entity attributes
@@ -132,7 +135,7 @@ public class HerobrineMod implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(content -> content.addAfter(Items.DIAMOND, ItemList.CURSED_DIAMOND));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(content -> content.addAfter(Items.BLAZE_POWDER, ItemList.CURSED_DUST));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(content -> content.addAfter(ItemList.CURSED_DIAMOND, ItemList.PURIFIED_DIAMOND));
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> content.addAfter(Items.NETHERITE_BOOTS, ItemList.CURSED_DIAMOND_HELMET));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> content.addAfter(Items.DIAMOND_BOOTS, ItemList.CURSED_DIAMOND_HELMET));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> content.addAfter(ItemList.CURSED_DIAMOND_HELMET, ItemList.CURSED_DIAMOND_CHESTPLATE));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> content.addAfter(ItemList.CURSED_DIAMOND_CHESTPLATE, ItemList.CURSED_DIAMOND_LEGGINGS));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> content.addAfter(ItemList.CURSED_DIAMOND_LEGGINGS, ItemList.CURSED_DIAMOND_BOOTS));
@@ -207,38 +210,38 @@ public class HerobrineMod implements ModInitializer {
                 BiomeModifications.addSpawn(BiomeSelectors.foundInTheEnd(), SpawnGroup.MONSTER, EntityTypeList.HEROBRINE_BUILDER, ConfigHandler.getHerobrineConfig().readInt("HerobrineBuilderWeight"), 1, 1);
             }
         }
-        SpawnRestriction.register(EntityTypeList.HEROBRINE_WARRIOR, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage3);
-        SpawnRestriction.register(EntityTypeList.HEROBRINE_BUILDER, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage2);
-        SpawnRestriction.register(EntityTypeList.HEROBRINE_MAGE, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage3);
-        SpawnRestriction.register(EntityTypeList.HEROBRINE_SPY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnPeacefulMode);
-        SpawnRestriction.register(EntityTypeList.HEROBRINE_STALKER, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnPeacefulModeStage1);
-        SpawnRestriction.register(EntityTypeList.INFECTED_PIG, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_COW, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_VILLAGER, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedVillagerEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_CHICKEN, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_SHEEP, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_BAT, SpawnRestriction.Location.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedBatEntity::canBatSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_WOLF, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_MOOSHROOM, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedMooshroomEntity::canMooshroomSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_DONKEY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_HORSE, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_LLAMA, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_RABBIT, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_AXOLOTL, SpawnRestriction.Location.IN_WATER, Heightmap.Type.OCEAN_FLOOR, InfectedAxolotlEntity::canSpawn);
-        SpawnRestriction.register(EntityTypeList.INFECTED_CAMEL, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedCamelEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.HEROBRINE_WARRIOR, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage3);
+        SpawnRestriction.register(EntityTypeList.HEROBRINE_BUILDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage2);
+        SpawnRestriction.register(EntityTypeList.HEROBRINE_MAGE, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnStage3);
+        SpawnRestriction.register(EntityTypeList.HEROBRINE_SPY, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnPeacefulMode);
+        SpawnRestriction.register(EntityTypeList.HEROBRINE_STALKER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HerobrineEntity::canSpawnPeacefulModeStage1);
+        SpawnRestriction.register(EntityTypeList.INFECTED_PIG, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_COW, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_VILLAGER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedVillagerEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_CHICKEN, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_SHEEP, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_BAT, SpawnLocationTypes.UNRESTRICTED, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedBatEntity::canBatSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_WOLF, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_MOOSHROOM, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedMooshroomEntity::canMooshroomSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_DONKEY, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_HORSE, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_LLAMA, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_RABBIT, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_AXOLOTL, SpawnLocationTypes.IN_WATER, Heightmap.Type.OCEAN_FLOOR, InfectedAxolotlEntity::canSpawn);
+        SpawnRestriction.register(EntityTypeList.INFECTED_CAMEL, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, InfectedCamelEntity::canSpawn);
     }
 
     private void registerSurvivorSkins() {
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/alex.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/ari.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/efe.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/kai.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/makena.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/noor.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/steve.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/sunny.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier("textures/entity/player/wide/zuri.png"));
-        SurvivorSkinRegistry.addSkin(new Identifier(MODID, "textures/entity/survivor/amaclean04.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/alex.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/ari.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/efe.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/kai.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/makena.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/noor.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/steve.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/sunny.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of("textures/entity/player/wide/zuri.png"));
+        SurvivorSkinRegistry.addSkin(Identifier.of(MODID, "textures/entity/survivor/amaclean04.png"));
     }
 
     // Register callbacks. Used to properly load and unload each instance of WorldSaveData

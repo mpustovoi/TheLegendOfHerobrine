@@ -1,17 +1,18 @@
 package com.herobrinemod.herobrine.items;
 
+import com.herobrinemod.herobrine.component.DataComponentTypeList;
 import com.herobrinemod.herobrine.entities.FakeHerobrineMageEntity;
 import com.herobrinemod.herobrine.savedata.ConfigHandler;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.sound.SoundCategory;
@@ -24,14 +25,12 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class CursedDiamondSwordItem extends SwordItem {
-    private final String KILLS_KEY = "Kills";
-    public CursedDiamondSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
+    public CursedDiamondSwordItem(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, settings);
     }
 
     @Override
@@ -43,23 +42,21 @@ public class CursedDiamondSwordItem extends SwordItem {
     }
 
     public int getKills(@NotNull ItemStack stack) {
-        NbtCompound nbtCompound = stack.getOrCreateNbt();
-        return nbtCompound.getInt(KILLS_KEY);
+        return stack.getOrDefault(DataComponentTypeList.KILLS, 0);
     }
 
     public void setKills(@NotNull ItemStack stack, int kills) {
-        NbtCompound nbtCompound = stack.getOrCreateNbt();
-        nbtCompound.putInt(KILLS_KEY, kills);
+        stack.set(DataComponentTypeList.KILLS, kills);
     }
 
     @Override
-    public void appendTooltip(@NotNull ItemStack stack, @Nullable World world, @NotNull List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         if(this.getKills(stack) < ConfigHandler.getHerobrineConfig().readInt("CursedDiamondSwordChargeCost")) {
             tooltip.add(Text.translatable("item.herobrine.cursed_diamond_sword.kills").append(ScreenTexts.SPACE).append(String.valueOf(this.getKills(stack))).formatted(Formatting.GRAY));
         } else {
             tooltip.add(Text.translatable("item.herobrine.cursed_diamond_sword.kills").append(ScreenTexts.SPACE).append(String.valueOf(this.getKills(stack))).formatted(Formatting.LIGHT_PURPLE));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     @Override
@@ -81,9 +78,9 @@ public class CursedDiamondSwordItem extends SwordItem {
             if (!user.isCreative()) {
                 user.getItemCooldownManager().set(this, ConfigHandler.getHerobrineConfig().readInt("CursedDiamondSwordMagicCooldownTicks"));
                 if(hand.equals(Hand.MAIN_HAND)) {
-                    itemStack.damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), user, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+                    itemStack.damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), user, EquipmentSlot.MAINHAND);
                 } else {
-                    itemStack.damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), user, e -> e.sendEquipmentBreakStatus(EquipmentSlot.OFFHAND));
+                    itemStack.damage(ConfigHandler.getHerobrineConfig().readInt("CursedDiamondMagicItemDamage"), user, EquipmentSlot.OFFHAND);
                 }
                 if(!world.isClient) {
                     this.setKills(itemStack, this.getKills(itemStack) - ConfigHandler.getHerobrineConfig().readInt("CursedDiamondSwordChargeCost") );

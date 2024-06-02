@@ -26,6 +26,6 @@ public class InfectedDonkeyEntityRenderer extends MobEntityRenderer<InfectedDonk
 
     @Override
     public Identifier getTexture(InfectedDonkeyEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_donkey.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_donkey.png");
     }
 }

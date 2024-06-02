@@ -11,7 +11,7 @@
     "fog_color": 12638463,
     "mood_sound": {
       "block_search_extent": 8,
-      "offset": 2,
+      "offset": 2.0,
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
@@ -19,13 +19,14 @@
       "max_delay": 24000,
       "min_delay": 12000,
       "replace_current_music": false,
-      "sound": "minecraft:music.overworld.jungle_and_forest"
+      "sound": "minecraft:music.overworld.forest"
     },
     "sky_color": 7972607,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
   "features": [
+    [],
     [
       "minecraft:lake_lava_underground",
       "minecraft:lake_lava_surface"
@@ -37,6 +38,8 @@
       "minecraft:monster_room",
       "minecraft:monster_room_deep"
     ],
+    [],
+    [],
     [
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
@@ -57,6 +60,7 @@
       "minecraft:ore_redstone",
       "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
+      "minecraft:ore_diamond_medium",
       "minecraft:ore_diamond_large",
       "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
@@ -67,6 +71,7 @@
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
     ],
+    [],
     [
       "minecraft:spring_water",
       "minecraft:spring_lava"
@@ -74,7 +79,7 @@
     [
       "minecraft:glow_lichen",
       "minecraft:forest_flowers",
-      "herobrine:cursed_trees_birch_and_oak",
+      "herobrine:cursed_forest_trees",
       "minecraft:flower_default",
       "minecraft:patch_grass_forest",
       "minecraft:brown_mushroom_normal",

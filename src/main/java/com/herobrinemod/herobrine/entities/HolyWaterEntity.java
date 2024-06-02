@@ -34,11 +34,6 @@ public class HolyWaterEntity extends ThrownItemEntity {
     }
 
     @Override
-    public ItemStack getItem() {
-        return new ItemStack(ItemList.HOLY_WATER);
-    }
-
-    @Override
     public void handleStatus(byte status) {
         if (status == 3) {
             for (int i = 0; i < 8; ++i) {
@@ -57,20 +52,19 @@ public class HolyWaterEntity extends ThrownItemEntity {
                 for(LivingEntity entity : affectedEntities) {
                     entity.setOnFire(false);
                     entity.clearStatusEffects();
-                    if (entity instanceof InfectedEntity) {
+                    if (entity.getType().isIn(EntityTypeTagList.IS_INFECTED_BY_HEROBRINE)) {
                         ((InfectedEntity) entity).convert();
                         break;
                     }
 
-                    if (entity instanceof FakeHerobrineMageEntity) {
-                        entity.remove(RemovalReason.DISCARDED);
-                        break;
-                    }
-
-                    if(!(entity instanceof HerobrineEntity)) {
+                    if(!(entity.getType().isIn(EntityTypeTagList.IS_HEROBRINE))) {
                         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 300, 1));
                         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 300, 1));
                     } else {
+                        if (entity instanceof FakeHerobrineMageEntity) {
+                            entity.remove(RemovalReason.DISCARDED);
+                            break;
+                        }
                         entity.damage(this.getDamageSources().thrown(this, getOwner()), 10.0f);
                     }
                 }

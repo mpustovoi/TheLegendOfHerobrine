@@ -1,7 +1,9 @@
 package com.herobrinemod.herobrine.entities;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
@@ -31,6 +33,8 @@ import net.minecraft.world.WorldEvents;
 import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class InfectedBatEntity extends InfectedEntity{
     public static final int wingFlap = MathHelper.ceil(2.4166098f);
@@ -70,19 +74,14 @@ public class InfectedBatEntity extends InfectedEntity{
     }
 
     @Override
-    protected float getActiveEyeHeight(EntityPose pose, @NotNull EntityDimensions dimensions) {
-        return dimensions.height / 2.0f;
-    }
-
-    @Override
     public boolean isFlappingWings() {
         return !this.isRoosting() && this.age % wingFlap == 0;
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(BAT_FLAGS, (byte)0);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(BAT_FLAGS, (byte)0);
     }
 
     @Override
@@ -188,13 +187,7 @@ public class InfectedBatEntity extends InfectedEntity{
             if (this.hangingPosition == null || this.random.nextInt(30) == 0 || this.hangingPosition.isWithinDistance(this.getPos(), 2.0)) {
                 this.hangingPosition = BlockPos.ofFloored(this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7), this.getY() + (double)this.random.nextInt(6) - 2.0, this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7));
             }
-            double d = (double)this.hangingPosition.getX() + 0.5 - this.getX();
-            assert this.hangingPosition != null;
-            double e = (double)this.hangingPosition.getY() + 0.1 - this.getY();
-            assert this.hangingPosition != null;
-            double f = (double)this.hangingPosition.getZ() + 0.5 - this.getZ();
-            Vec3d vec3d = this.getVelocity();
-            Vec3d vec3d2 = vec3d.add((Math.signum(d) * 0.5 - vec3d.x) * (double)0.1f, (Math.signum(e) * (double)0.7f - vec3d.y) * (double)0.1f, (Math.signum(f) * 0.5 - vec3d.z) * (double)0.1f);
+            Vec3d vec3d2 = getVec3d();
             this.setVelocity(vec3d2);
             float g = (float)(MathHelper.atan2(vec3d2.z, vec3d2.x) * 57.2957763671875) - 90.0f;
             float h = MathHelper.wrapDegrees(g - this.getYaw());
@@ -208,6 +201,16 @@ public class InfectedBatEntity extends InfectedEntity{
                 this.setRoosting(true);
             }
         }
+    }
+
+    private Vec3d getVec3d() {
+        double d = (double) Objects.requireNonNull(this.hangingPosition).getX() + 0.5 - this.getX();
+        assert this.hangingPosition != null;
+        double e = (double)this.hangingPosition.getY() + 0.1 - this.getY();
+        assert this.hangingPosition != null;
+        double f = (double)this.hangingPosition.getZ() + 0.5 - this.getZ();
+        Vec3d vec3d = this.getVelocity();
+        return vec3d.add((Math.signum(d) * 0.5 - vec3d.x) * (double)0.1f, (Math.signum(e) * (double)0.7f - vec3d.y) * (double)0.1f, (Math.signum(f) * 0.5 - vec3d.z) * (double)0.1f);
     }
 
     public void moveToEntity(@NotNull Entity entity) {

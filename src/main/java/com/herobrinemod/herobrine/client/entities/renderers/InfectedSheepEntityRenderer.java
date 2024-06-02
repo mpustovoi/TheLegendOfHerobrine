@@ -20,6 +20,6 @@ public class InfectedSheepEntityRenderer extends MobEntityRenderer<InfectedSheep
 
     @Override
     public Identifier getTexture(InfectedSheepEntity entity) {
-        return new Identifier(HerobrineMod.MODID, "textures/entity/infected_sheep.png");
+        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_sheep.png");
     }
 }

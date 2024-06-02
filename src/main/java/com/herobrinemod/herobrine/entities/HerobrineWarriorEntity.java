@@ -116,11 +116,11 @@ public class HerobrineWarriorEntity extends HerobrineEntity {
     }
 
     @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
         this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(ItemList.BEDROCK_SWORD));
         if(!ConfigHandler.getHerobrineConfig().readBoolean("BedrockSwordDrops")) {
             this.handDropChances[EquipmentSlot.MAINHAND.getEntitySlotId()] = 0.0f;
         }
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 }

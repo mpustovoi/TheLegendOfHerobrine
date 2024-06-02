@@ -4,8 +4,6 @@ import com.herobrinemod.herobrine.entities.goals.InfectedDonkeyAmbientStandGoal;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -42,7 +40,6 @@ public class InfectedDonkeyEntity extends InfectedEntity {
     public InfectedDonkeyEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
         this.experiencePoints = 3;
-        this.setStepHeight(1.0f);
         this.setConversionEntity(EntityType.DONKEY);
     }
 
@@ -65,6 +62,7 @@ public class InfectedDonkeyEntity extends InfectedEntity {
 
     public static DefaultAttributeContainer.Builder registerAttributes() {
         return createHostileAttributes()
+                .add(EntityAttributes.GENERIC_STEP_HEIGHT, 1.0)
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 25.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0)
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16.0)
@@ -77,9 +75,9 @@ public class InfectedDonkeyEntity extends InfectedEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(FLAGS, (byte)0);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(FLAGS, (byte)0);
     }
 
     protected boolean getFlag(int bitmask) {
@@ -195,11 +193,6 @@ public class InfectedDonkeyEntity extends InfectedEntity {
 
     public float getAngryAnimationProgress(float tickDelta) {
         return MathHelper.lerp(tickDelta, this.lastAngryAnimationProgress, this.angryAnimationProgress);
-    }
-
-    @Override
-    protected float getActiveEyeHeight(EntityPose pose, @NotNull EntityDimensions dimensions) {
-        return dimensions.height * 0.95f;
     }
 
     @Override

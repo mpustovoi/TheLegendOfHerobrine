@@ -20,13 +20,13 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class InfectedHorseEntityRenderer extends MobEntityRenderer<InfectedHorseEntity, InfectedHorseEntityModel> {
     private static final Map<HorseColor, Identifier> TEXTURES = Util.make(Maps.newEnumMap(HorseColor.class), map -> {
-        map.put(HorseColor.WHITE, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_white.png"));
-        map.put(HorseColor.CREAMY, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_creamy.png"));
-        map.put(HorseColor.CHESTNUT, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_chestnut.png"));
-        map.put(HorseColor.BROWN, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_brown.png"));
-        map.put(HorseColor.BLACK, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_black.png"));
-        map.put(HorseColor.GRAY, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_gray.png"));
-        map.put(HorseColor.DARK_BROWN, new Identifier(HerobrineMod.MODID, "textures/entity/infected_horse/horse_darkbrown.png"));
+        map.put(HorseColor.WHITE, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_white.png"));
+        map.put(HorseColor.CREAMY, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_creamy.png"));
+        map.put(HorseColor.CHESTNUT, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_chestnut.png"));
+        map.put(HorseColor.BROWN, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_brown.png"));
+        map.put(HorseColor.BLACK, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_black.png"));
+        map.put(HorseColor.GRAY, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_gray.png"));
+        map.put(HorseColor.DARK_BROWN, Identifier.of(HerobrineMod.MODID, "textures/entity/infected_horse/horse_darkbrown.png"));
     });
     public InfectedHorseEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new InfectedHorseEntityModel(context.getPart(HerobrineModelLayers.INFECTED_HORSE_MODEL_LAYER)), 0.75f);

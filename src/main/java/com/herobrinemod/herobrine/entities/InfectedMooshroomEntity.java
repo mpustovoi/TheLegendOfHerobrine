@@ -4,6 +4,8 @@ import com.herobrinemod.herobrine.items.ItemList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SuspiciousStewIngredient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -12,13 +14,14 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.MooshroomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
-import net.minecraft.item.SuspiciousStewItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
@@ -39,19 +42,24 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class InfectedMooshroomEntity extends InfectedCowEntity implements Shearable {
     private static final TrackedData<String> TYPE = DataTracker.registerData(InfectedMooshroomEntity.class, TrackedDataHandlerRegistry.STRING);
     @Nullable
-    private List<SuspiciousStewIngredient.StewEffect> stewEffects;
+    private SuspiciousStewEffectsComponent stewEffects;
     @Nullable
     private UUID lightningId;
+
     public InfectedMooshroomEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
         this.setConversionEntity(EntityType.MOOSHROOM);
+    }
+
+    @Override
+    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+        return world.getBlockState(pos.down()).isOf(Blocks.MYCELIUM) ? 10.0F : world.getPhototaxisFavor(pos);
     }
 
     public static boolean canMooshroomSpawn(EntityType<? extends InfectedEntity> type, @NotNull ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, net.minecraft.util.math.random.@NotNull Random random) {
@@ -67,87 +75,23 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 300, 1));
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 300, 1));
         ((MooshroomEntity) entity).setVariant(MooshroomEntity.Type.valueOf(this.getVariant().toString()));
-        entity.initialize((ServerWorldAccess) this.getWorld(), this.getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null, null);
+        entity.initialize((ServerWorldAccess) this.getWorld(), this.getWorld().getLocalDifficulty(this.getBlockPos()), SpawnReason.CONVERSION, null);
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(TYPE, InfectedMooshroomEntity.Type.RED.name);
-    }
-
-    @Override
-    public boolean isShearable() {
-        return this.isAlive();
-    }
-
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putString("Type", this.getVariant().asString());
-        if (this.stewEffects != null) {
-            SuspiciousStewIngredient.StewEffect.LIST_CODEC.encodeStart(NbtOps.INSTANCE, this.stewEffects).result().ifPresent((nbtElement) -> nbt.put("stew_effects", nbtElement));
-        }
-
-    }
-
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.setVariant(Type.fromName(nbt.getString("Type")));
-        if (nbt.contains("stew_effects", 9)) {
-            SuspiciousStewIngredient.StewEffect.LIST_CODEC.parse(NbtOps.INSTANCE, nbt.get("stew_effects")).result().ifPresent((stewEffects) -> this.stewEffects = stewEffects);
-        }
-
-    }
-
-    public void setVariant(InfectedMooshroomEntity.@NotNull Type type) {
-        this.dataTracker.set(TYPE, type.name);
-    }
-
-    public InfectedMooshroomEntity.Type getVariant() {
-        return InfectedMooshroomEntity.Type.fromName(this.dataTracker.get(TYPE));
-    }
-
-    private Optional<List<SuspiciousStewIngredient.StewEffect>> getStewEffectFrom(@NotNull ItemStack flower) {
-        SuspiciousStewIngredient suspiciousStewIngredient = SuspiciousStewIngredient.of(flower.getItem());
-        return suspiciousStewIngredient != null ? Optional.of(suspiciousStewIngredient.getStewEffects()) : Optional.empty();
-    }
-
-    public enum Type implements StringIdentifiable {
-        RED("red", Blocks.RED_MUSHROOM.getDefaultState()),
-        BROWN("brown", Blocks.BROWN_MUSHROOM.getDefaultState());
-
-        public static final StringIdentifiable.EnumCodec<Type> CODEC = StringIdentifiable.createCodec(Type::values);
-        final String name;
-        final BlockState mushroom;
-
-        Type(String name, BlockState mushroom) {
-            this.name = name;
-            this.mushroom = mushroom;
-        }
-
-        public BlockState getMushroomState() {
-            return this.mushroom;
-        }
-
-        public String asString() {
-            return this.name;
-        }
-
-        static Type fromName(String name) {
-            return CODEC.byId(name, RED);
-        }
-    }
-
-    @Override
-    public void onStruckByLightning(ServerWorld world, @NotNull LightningEntity lightning) {
+    public void onStruckByLightning(ServerWorld world, LightningEntity lightning) {
         UUID uUID = lightning.getUuid();
         if (!uUID.equals(this.lightningId)) {
             this.setVariant(this.getVariant() == InfectedMooshroomEntity.Type.RED ? InfectedMooshroomEntity.Type.BROWN : InfectedMooshroomEntity.Type.RED);
             this.lightningId = uUID;
-            this.playSound(SoundEvents.ENTITY_MOOSHROOM_CONVERT, 2.0f, 1.0f);
+            this.playSound(SoundEvents.ENTITY_MOOSHROOM_CONVERT, 2.0F, 1.0F);
         }
+    }
+
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(TYPE, InfectedMooshroomEntity.Type.RED.name);
     }
 
     @Override
@@ -159,7 +103,7 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
             if (this.stewEffects != null) {
                 bl = true;
                 itemStack2 = new ItemStack(Items.SUSPICIOUS_STEW);
-                SuspiciousStewItem.writeEffectsToStew(itemStack2, this.stewEffects);
+                itemStack2.set(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, this.stewEffects);
                 this.stewEffects = null;
             } else {
                 itemStack2 = new ItemStack(Items.MUSHROOM_STEW);
@@ -180,27 +124,43 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
             this.sheared(SoundCategory.PLAYERS);
             this.emitGameEvent(GameEvent.SHEAR, player);
             if (!this.getWorld().isClient) {
-                itemStack.damage(1, player, (playerx) -> playerx.sendToolBreakStatus(hand));
+                itemStack.damage(1, player, getSlotForHand(hand));
             }
 
             return ActionResult.success(this.getWorld().isClient);
-        } else if (this.getVariant() == Type.BROWN && itemStack.isIn(ItemTags.SMALL_FLOWERS)) {
+        } else if (this.getVariant() == InfectedMooshroomEntity.Type.BROWN && itemStack.isIn(ItemTags.SMALL_FLOWERS)) {
             if (this.stewEffects != null) {
                 for(int i = 0; i < 2; ++i) {
-                    this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX() + this.random.nextDouble() / 2.0, this.getBodyY(0.5), this.getZ() + this.random.nextDouble() / 2.0, 0.0, this.random.nextDouble() / 5.0, 0.0);
+                    this.getWorld()
+                            .addParticle(
+                                    ParticleTypes.SMOKE,
+                                    this.getX() + this.random.nextDouble() / 2.0,
+                                    this.getBodyY(0.5),
+                                    this.getZ() + this.random.nextDouble() / 2.0,
+                                    0.0,
+                                    this.random.nextDouble() / 5.0,
+                                    0.0
+                            );
                 }
             } else {
-                Optional<List<SuspiciousStewIngredient.StewEffect>> optional = this.getStewEffectFrom(itemStack);
+                Optional<SuspiciousStewEffectsComponent> optional = this.getStewEffectFrom(itemStack);
                 if (optional.isEmpty()) {
                     return ActionResult.PASS;
                 }
 
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
+                itemStack.decrementUnlessCreative(1, player);
 
                 for(int j = 0; j < 4; ++j) {
-                    this.getWorld().addParticle(ParticleTypes.EFFECT, this.getX() + this.random.nextDouble() / 2.0, this.getBodyY(0.5), this.getZ() + this.random.nextDouble() / 2.0, 0.0, this.random.nextDouble() / 5.0, 0.0);
+                    this.getWorld()
+                            .addParticle(
+                                    ParticleTypes.EFFECT,
+                                    this.getX() + this.random.nextDouble() / 2.0,
+                                    this.getBodyY(0.5),
+                                    this.getZ() + this.random.nextDouble() / 2.0,
+                                    0.0,
+                                    this.random.nextDouble() / 5.0,
+                                    0.0
+                            );
                 }
 
                 this.stewEffects = optional.get();
@@ -214,38 +174,98 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
     }
 
     @Override
-    public float getPathfindingFavor(@NotNull BlockPos pos, @NotNull WorldView world) {
-        if (world.getBlockState(pos.down()).isOf(Blocks.MYCELIUM)) {
-            return 10.0f;
+    public void sheared(SoundCategory shearedSoundCategory) {
+        this.getWorld().playSoundFromEntity(null, this, SoundEvents.ENTITY_MOOSHROOM_SHEAR, shearedSoundCategory, 1.0F, 1.0F);
+        if (!this.getWorld().isClient()) {
+            CowEntity cowEntity = EntityType.COW.create(this.getWorld());
+            if (cowEntity != null) {
+                ((ServerWorld)this.getWorld()).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+                this.discard();
+                cowEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch());
+                cowEntity.setHealth(this.getHealth());
+                cowEntity.bodyYaw = this.bodyYaw;
+                if (this.hasCustomName()) {
+                    cowEntity.setCustomName(this.getCustomName());
+                    cowEntity.setCustomNameVisible(this.isCustomNameVisible());
+                }
+
+                if (this.isPersistent()) {
+                    cowEntity.setPersistent();
+                }
+
+                cowEntity.setInvulnerable(this.isInvulnerable());
+                this.getWorld().spawnEntity(cowEntity);
+
+                for(int i = 0; i < 5; ++i) {
+                    this.getWorld()
+                            .spawnEntity(new ItemEntity(this.getWorld(), this.getX(), this.getBodyY(1.0), this.getZ(), new ItemStack(this.getVariant().mushroom.getBlock())));
+                }
+            }
         }
-        return world.getPhototaxisFavor(pos);
     }
 
     @Override
-    public void sheared(SoundCategory shearedSoundCategory) {
-        InfectedCowEntity entity;
-        this.getWorld().playSoundFromEntity(null, this, SoundEvents.ENTITY_MOOSHROOM_SHEAR, shearedSoundCategory, 1.0f, 1.0f);
-        if (!this.getWorld().isClient() && (entity = EntityTypeList.INFECTED_COW.create(this.getWorld())) != null) {
-            ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
-            this.discard();
-            entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch());
-            entity.setHealth(this.getHealth());
-            entity.bodyYaw = this.bodyYaw;
+    public boolean isShearable() {
+        return this.isAlive() && !this.isBaby();
+    }
 
-            if (this.hasCustomName()) {
-                entity.setCustomName(this.getCustomName());
-                entity.setCustomNameVisible(this.isCustomNameVisible());
-            }
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putString("Type", this.getVariant().asString());
+        if (this.stewEffects != null) {
+            SuspiciousStewEffectsComponent.CODEC.encodeStart(NbtOps.INSTANCE, this.stewEffects).ifSuccess(nbtElement -> nbt.put("stew_effects", nbtElement));
+        }
+    }
 
-            if (this.isPersistent()) {
-                entity.setPersistent();
-            }
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.setVariant(InfectedMooshroomEntity.Type.fromName(nbt.getString("Type")));
+        if (nbt.contains("stew_effects", NbtElement.LIST_TYPE)) {
+            SuspiciousStewEffectsComponent.CODEC
+                    .parse(NbtOps.INSTANCE, nbt.get("stew_effects"))
+                    .ifSuccess(suspiciousStewEffectsComponent -> this.stewEffects = suspiciousStewEffectsComponent);
+        }
+    }
 
-            entity.setInvulnerable(this.isInvulnerable());
-            this.getWorld().spawnEntity(entity);
-            for (int i = 0; i < 5; ++i) {
-                this.getWorld().spawnEntity(new ItemEntity(this.getWorld(), this.getX(), this.getBodyY(1.0), this.getZ(), new ItemStack(this.getVariant().mushroom.getBlock())));
-            }
+    private Optional<SuspiciousStewEffectsComponent> getStewEffectFrom(ItemStack flower) {
+        SuspiciousStewIngredient suspiciousStewIngredient = SuspiciousStewIngredient.of(flower.getItem());
+        return suspiciousStewIngredient != null ? Optional.of(suspiciousStewIngredient.getStewEffects()) : Optional.empty();
+    }
+
+    public void setVariant(InfectedMooshroomEntity.Type type) {
+        this.dataTracker.set(TYPE, type.name);
+    }
+
+    public InfectedMooshroomEntity.Type getVariant() {
+        return InfectedMooshroomEntity.Type.fromName(this.dataTracker.get(TYPE));
+    }
+
+    public enum Type implements StringIdentifiable {
+        RED("red", Blocks.RED_MUSHROOM.getDefaultState()),
+        BROWN("brown", Blocks.BROWN_MUSHROOM.getDefaultState());
+
+        public static final StringIdentifiable.EnumCodec<InfectedMooshroomEntity.Type> CODEC = StringIdentifiable.createCodec(InfectedMooshroomEntity.Type::values);
+        final String name;
+        final BlockState mushroom;
+
+        Type(final String name, final BlockState mushroom) {
+            this.name = name;
+            this.mushroom = mushroom;
+        }
+
+        public BlockState getMushroomState() {
+            return this.mushroom;
+        }
+
+        @Override
+        public String asString() {
+            return this.name;
+        }
+
+        static InfectedMooshroomEntity.Type fromName(String name) {
+            return CODEC.byId(name, RED);
         }
     }
 }
