@@ -9,20 +9,20 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Box;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.TradeOffers;
@@ -31,8 +31,6 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class SurvivorEntity extends MerchantEntity {
     // For some reason using normal NBT data doesn't work and TrackedData does. Why? Just ask Mojang about their spaghetti code. This just works and any better method I tried won't work.
@@ -141,17 +139,6 @@ public class SurvivorEntity extends MerchantEntity {
             this.heal(1.0f);
         } else if(this.healTimer < 1 && this.isAlive()) {
             this.healTimer = 80;
-        }
-
-        // Makes every hostile mob that can see the Survivor and doesn't already have a target and isn't a Herobrine Stalker target the Survivor. Runs every tick. Very bloated implementation, but I've seen worse in the Vanilla code
-        Box angerBox = getBoundingBox().expand(32.0, 32.0, 32.0);
-        List<MobEntity> affectedEntities = this.getWorld().getEntitiesByClass(MobEntity.class, angerBox, EntityPredicates.VALID_LIVING_ENTITY);
-        if(!affectedEntities.isEmpty()) {
-            for(MobEntity entity : affectedEntities) {
-                if((entity instanceof HostileEntity && !(entity instanceof HerobrineStalkerEntity) && !(entity instanceof CreeperEntity) || entity instanceof SlimeEntity) && entity.getTarget() == null && entity.canSee(this) && entity.isAlive()) {
-                    entity.setTarget(this);
-                }
-            }
         }
 
         super.mobTick();
