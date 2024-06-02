@@ -1,6 +1,7 @@
 package com.herobrinemod.herobrine.entities;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -34,12 +35,11 @@ import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class InfectedBatEntity extends InfectedEntity{
-    public static final int wingFlap = MathHelper.ceil(2.4166098f);
     private static final TrackedData<Byte> BAT_FLAGS = DataTracker.registerData(InfectedBatEntity.class, TrackedDataHandlerRegistry.BYTE);
     private static final TargetPredicate CLOSE_PLAYER_PREDICATE = TargetPredicate.createNonAttackable().setBaseMaxDistance(4.0);
+    public final AnimationState flyingAnimationState = new AnimationState();
+    public final AnimationState roostingAnimationState = new AnimationState();
     @Nullable
     private BlockPos hangingPosition;
 
@@ -75,7 +75,7 @@ public class InfectedBatEntity extends InfectedEntity{
 
     @Override
     public boolean isFlappingWings() {
-        return !this.isRoosting() && this.age % wingFlap == 0;
+        return !this.isRoosting() && (float)this.age % 10.0F == 0.0F;
     }
 
     @Override
@@ -86,21 +86,18 @@ public class InfectedBatEntity extends InfectedEntity{
 
     @Override
     protected float getSoundVolume() {
-        return 0.1f;
+        return 0.1F;
     }
 
     @Override
     public float getSoundPitch() {
-        return super.getSoundPitch() * 0.95f;
+        return super.getSoundPitch() * 0.95F;
     }
 
-    @Override
     @Nullable
+    @Override
     public SoundEvent getAmbientSound() {
-        if (this.isRoosting() && this.random.nextInt(4) != 0) {
-            return null;
-        }
-        return SoundEvents.ENTITY_BAT_AMBIENT;
+        return this.isRoosting() && this.random.nextInt(4) != 0 ? null : SoundEvents.ENTITY_BAT_AMBIENT;
     }
 
     @Override
@@ -135,7 +132,7 @@ public class InfectedBatEntity extends InfectedEntity{
         if (roosting) {
             this.dataTracker.set(BAT_FLAGS, (byte)(b | 1));
         } else {
-            this.dataTracker.set(BAT_FLAGS, (byte)(b & 0xFFFFFFFE));
+            this.dataTracker.set(BAT_FLAGS, (byte)(b & -2));
         }
     }
 
@@ -155,6 +152,8 @@ public class InfectedBatEntity extends InfectedEntity{
         } else {
             this.setVelocity(this.getVelocity().multiply(1.0, 0.6, 1.0));
         }
+
+        this.updateAnimations();
     }
 
     @Override
@@ -166,8 +165,9 @@ public class InfectedBatEntity extends InfectedEntity{
             boolean bl = this.isSilent();
             if (this.getWorld().getBlockState(blockPos2).isSolidBlock(this.getWorld(), blockPos)) {
                 if (this.random.nextInt(200) == 0) {
-                    this.headYaw = this.random.nextInt(360);
+                    this.headYaw = (float)this.random.nextInt(360);
                 }
+
                 if (this.getWorld().getClosestPlayer(CLOSE_PLAYER_PREDICATE, this) != null) {
                     this.setRoosting(false);
                     if (!bl) {
@@ -181,15 +181,21 @@ public class InfectedBatEntity extends InfectedEntity{
                 }
             }
         } else {
-            if (!(this.hangingPosition == null || this.getWorld().isAir(this.hangingPosition) && this.hangingPosition.getY() > this.getWorld().getBottomY())) {
+            if (this.hangingPosition != null && (!this.getWorld().isAir(this.hangingPosition) || this.hangingPosition.getY() <= this.getWorld().getBottomY())) {
                 this.hangingPosition = null;
             }
+
             if (this.hangingPosition == null || this.random.nextInt(30) == 0 || this.hangingPosition.isWithinDistance(this.getPos(), 2.0)) {
-                this.hangingPosition = BlockPos.ofFloored(this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7), this.getY() + (double)this.random.nextInt(6) - 2.0, this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7));
+                this.hangingPosition = BlockPos.ofFloored(
+                        this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7),
+                        this.getY() + (double)this.random.nextInt(6) - 2.0,
+                        this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7)
+                );
             }
-            Vec3d vec3d2 = getVec3d();
+
+            Vec3d vec3d2 = getHangingVec();
             this.setVelocity(vec3d2);
-            float g = (float)(MathHelper.atan2(vec3d2.z, vec3d2.x) * 57.2957763671875) - 90.0f;
+            float g = (float)(MathHelper.atan2(vec3d2.z, vec3d2.x) * 180.0F / (float)Math.PI) - 90.0F;
             float h = MathHelper.wrapDegrees(g - this.getYaw());
             if (this.getTarget() != null) {
                 this.moveToEntity(this.getTarget());
@@ -203,14 +209,15 @@ public class InfectedBatEntity extends InfectedEntity{
         }
     }
 
-    private Vec3d getVec3d() {
-        double d = (double) Objects.requireNonNull(this.hangingPosition).getX() + 0.5 - this.getX();
+    private Vec3d getHangingVec() {
+        assert this.hangingPosition != null;
+        double d = (double)this.hangingPosition.getX() + 0.5 - this.getX();
         assert this.hangingPosition != null;
         double e = (double)this.hangingPosition.getY() + 0.1 - this.getY();
         assert this.hangingPosition != null;
         double f = (double)this.hangingPosition.getZ() + 0.5 - this.getZ();
         Vec3d vec3d = this.getVelocity();
-        return vec3d.add((Math.signum(d) * 0.5 - vec3d.x) * (double)0.1f, (Math.signum(e) * (double)0.7f - vec3d.y) * (double)0.1f, (Math.signum(f) * 0.5 - vec3d.z) * (double)0.1f);
+        return vec3d.add((Math.signum(d) * 0.5 - vec3d.x) * 0.1F, (Math.signum(e) * 0.7F - vec3d.y) * 0.1F, (Math.signum(f) * 0.5 - vec3d.z) * 0.1F);
     }
 
     public void moveToEntity(@NotNull Entity entity) {
@@ -238,10 +245,25 @@ public class InfectedBatEntity extends InfectedEntity{
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (!this.getWorld().isClient && this.isRoosting()) {
-            this.setRoosting(false);
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            if (!this.getWorld().isClient && this.isRoosting()) {
+                this.setRoosting(false);
+            }
+
+            return super.damage(source, amount);
         }
-        return super.damage(source, amount);
+    }
+
+    private void updateAnimations() {
+        if (this.isRoosting()) {
+            this.flyingAnimationState.stop();
+            this.roostingAnimationState.startIfNotRunning(this.age);
+        } else {
+            this.roostingAnimationState.stop();
+            this.flyingAnimationState.startIfNotRunning(this.age);
+        }
     }
 
     @Override

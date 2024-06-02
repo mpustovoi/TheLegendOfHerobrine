@@ -14,14 +14,14 @@ import net.minecraft.util.Rarity;
 
 public class ItemList {
     // Initialize items
-    public static final Item BEDROCK_SWORD = new SwordItem(ToolMaterialList.BEDROCK, new Item.Settings().rarity(Rarity.EPIC).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterialList.BEDROCK, 0, -2.4f)));
+    public static final Item BEDROCK_SWORD = new SwordItem(ToolMaterialList.BEDROCK, new Item.Settings().customDamage((stack, amount, entity, slot, breakCallback) -> 0).rarity(Rarity.EPIC).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterialList.BEDROCK, 0, -2.4f)));
     public static final Item CURSED_DIAMOND = new Item(new Item.Settings());
     public static final Item CURSED_DUST = new Item(new Item.Settings());
     public static final Item PURIFIED_DIAMOND = new Item(new Item.Settings());
-    public static final Item CURSED_DIAMOND_HELMET = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.HELMET, new Item.Settings());
-    public static final Item CURSED_DIAMOND_CHESTPLATE = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.CHESTPLATE, new Item.Settings());
-    public static final Item CURSED_DIAMOND_LEGGINGS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.LEGGINGS, new Item.Settings());
-    public static final Item CURSED_DIAMOND_BOOTS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.BOOTS, new Item.Settings());
+    public static final Item CURSED_DIAMOND_HELMET = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(33)));
+    public static final Item CURSED_DIAMOND_CHESTPLATE = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.CHESTPLATE, new Item.Settings().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(33)));
+    public static final Item CURSED_DIAMOND_LEGGINGS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.LEGGINGS, new Item.Settings().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(33)));
+    public static final Item CURSED_DIAMOND_BOOTS = new ArmorItem(ArmorMaterialList.CURSED_DIAMOND, ArmorItem.Type.BOOTS, new Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(33)));
     public static final Item CURSED_DIAMOND_SWORD = new CursedDiamondSwordItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().component(DataComponentTypeList.KILLS, 0).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 3, -2.4f)));
     public static final Item CURSED_DIAMOND_AXE = new CursedDiamondAxeItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(AxeItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 5.0f, -3.0f)));
     public static final Item CURSED_DIAMOND_PICKAXE = new PickaxeItem(ToolMaterialList.CURSED_DIAMOND, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ToolMaterialList.CURSED_DIAMOND, 1.0f, -2.8f)));

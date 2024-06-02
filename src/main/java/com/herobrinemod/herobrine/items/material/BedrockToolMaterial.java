@@ -8,12 +8,12 @@ import net.minecraft.registry.tag.TagKey;
 public class BedrockToolMaterial implements ToolMaterial {
     @Override
     public int getDurability() {
-        return -1;
+        return 1;
     }
 
     @Override
     public float getMiningSpeedMultiplier() {
-        return -1;
+        return 0;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class BedrockToolMaterial implements ToolMaterial {
 
     @Override
     public int getEnchantability() {
-        return -1;
+        return 0;
     }
 
     @Override

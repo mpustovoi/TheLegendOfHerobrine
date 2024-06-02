@@ -94,8 +94,14 @@ public abstract class HerobrineEntity extends HostileEntity {
     @Override
     protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
         super.dropEquipment(world, source, causedByPlayer);
-        if (random.nextFloat() < EnchantmentHelper.getEquipmentDropChance(world, (LivingEntity) source.getAttacker(), source, 20)) {
-            this.dropItem(ItemList.CURSED_DUST);
+        try {
+            if (random.nextFloat() < EnchantmentHelper.getEquipmentDropChance(world, (LivingEntity) source.getAttacker(), source, 0.2f)) {
+                this.dropItem(ItemList.CURSED_DUST);
+            }
+        } catch (NullPointerException e) {
+            if(random.nextInt(4) == 0) {
+                this.dropItem(ItemList.CURSED_DUST);
+            }
         }
     }
 

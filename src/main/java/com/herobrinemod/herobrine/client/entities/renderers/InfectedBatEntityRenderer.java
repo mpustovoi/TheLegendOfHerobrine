@@ -8,9 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class InfectedBatEntityRenderer extends MobEntityRenderer<InfectedBatEntity, InfectedBatEntityModel> {
@@ -22,10 +20,5 @@ public class InfectedBatEntityRenderer extends MobEntityRenderer<InfectedBatEnti
     @Override
     public Identifier getTexture(InfectedBatEntity entity) {
         return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_bat.png");
-    }
-
-    @Override
-    protected void scale(InfectedBatEntity entity, @NotNull MatrixStack matrixStack, float f) {
-        matrixStack.scale(0.35f, 0.35f, 0.35f);
     }
 }
