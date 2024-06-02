@@ -14,7 +14,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.MooshroomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -58,7 +57,7 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
     }
 
     @Override
-    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+    public float getPathfindingFavor(@NotNull BlockPos pos, @NotNull WorldView world) {
         return world.getBlockState(pos.down()).isOf(Blocks.MYCELIUM) ? 10.0F : world.getPhototaxisFavor(pos);
     }
 
@@ -79,7 +78,7 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
     }
 
     @Override
-    public void onStruckByLightning(ServerWorld world, LightningEntity lightning) {
+    public void onStruckByLightning(ServerWorld world, @NotNull LightningEntity lightning) {
         UUID uUID = lightning.getUuid();
         if (!uUID.equals(this.lightningId)) {
             this.setVariant(this.getVariant() == InfectedMooshroomEntity.Type.RED ? InfectedMooshroomEntity.Type.BROWN : InfectedMooshroomEntity.Type.RED);
@@ -95,7 +94,7 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
     }
 
     @Override
-    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+    public ActionResult interactMob(@NotNull PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (itemStack.isOf(Items.BOWL) && !this.isBaby()) {
             boolean bl = false;
@@ -177,24 +176,24 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
     public void sheared(SoundCategory shearedSoundCategory) {
         this.getWorld().playSoundFromEntity(null, this, SoundEvents.ENTITY_MOOSHROOM_SHEAR, shearedSoundCategory, 1.0F, 1.0F);
         if (!this.getWorld().isClient()) {
-            CowEntity cowEntity = EntityType.COW.create(this.getWorld());
-            if (cowEntity != null) {
+            InfectedCowEntity entity = EntityTypeList.INFECTED_COW.create(this.getWorld());
+            if (entity != null) {
                 ((ServerWorld)this.getWorld()).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getBodyY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
                 this.discard();
-                cowEntity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch());
-                cowEntity.setHealth(this.getHealth());
-                cowEntity.bodyYaw = this.bodyYaw;
+                entity.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch());
+                entity.setHealth(this.getHealth());
+                entity.bodyYaw = this.bodyYaw;
                 if (this.hasCustomName()) {
-                    cowEntity.setCustomName(this.getCustomName());
-                    cowEntity.setCustomNameVisible(this.isCustomNameVisible());
+                    entity.setCustomName(this.getCustomName());
+                    entity.setCustomNameVisible(this.isCustomNameVisible());
                 }
 
                 if (this.isPersistent()) {
-                    cowEntity.setPersistent();
+                    entity.setPersistent();
                 }
 
-                cowEntity.setInvulnerable(this.isInvulnerable());
-                this.getWorld().spawnEntity(cowEntity);
+                entity.setInvulnerable(this.isInvulnerable());
+                this.getWorld().spawnEntity(entity);
 
                 for(int i = 0; i < 5; ++i) {
                     this.getWorld()
@@ -229,12 +228,12 @@ public class InfectedMooshroomEntity extends InfectedCowEntity implements Sheara
         }
     }
 
-    private Optional<SuspiciousStewEffectsComponent> getStewEffectFrom(ItemStack flower) {
+    private Optional<SuspiciousStewEffectsComponent> getStewEffectFrom(@NotNull ItemStack flower) {
         SuspiciousStewIngredient suspiciousStewIngredient = SuspiciousStewIngredient.of(flower.getItem());
         return suspiciousStewIngredient != null ? Optional.of(suspiciousStewIngredient.getStewEffects()) : Optional.empty();
     }
 
-    public void setVariant(InfectedMooshroomEntity.Type type) {
+    public void setVariant(InfectedMooshroomEntity.@NotNull Type type) {
         this.dataTracker.set(TYPE, type.name);
     }
 

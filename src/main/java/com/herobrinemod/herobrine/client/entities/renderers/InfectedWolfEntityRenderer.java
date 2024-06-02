@@ -1,6 +1,5 @@
 package com.herobrinemod.herobrine.client.entities.renderers;
 
-import com.herobrinemod.herobrine.HerobrineMod;
 import com.herobrinemod.herobrine.client.entities.models.HerobrineModelLayers;
 import com.herobrinemod.herobrine.client.entities.models.InfectedWolfEntityModel;
 import com.herobrinemod.herobrine.entities.InfectedWolfEntity;
@@ -17,13 +16,13 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class InfectedWolfEntityRenderer extends MobEntityRenderer<InfectedWolfEntity, InfectedWolfEntityModel> {
     public InfectedWolfEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new InfectedWolfEntityModel(context.getPart(HerobrineModelLayers.INFECTED_WOLF_MODEL_LAYER)), 0.5f);
+        super(context, new InfectedWolfEntityModel(context.getPart(HerobrineModelLayers.INFECTED_WOLF_MODEL_LAYER)), 0.5F);
         this.addFeature(new InfectedWolfEyesFeatureRenderer(this));
     }
 
     @Override
     protected float getAnimationProgress(@NotNull InfectedWolfEntity entity, float f) {
-        return (float) Math.PI / 5.0f;
+        return (float) Math.PI / 5;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class InfectedWolfEntityRenderer extends MobEntityRenderer<InfectedWolfEn
     }
 
     @Override
-    public Identifier getTexture(InfectedWolfEntity entity) {
-        return Identifier.of(HerobrineMod.MODID, "textures/entity/infected_wolf.png");
+    public Identifier getTexture(@NotNull InfectedWolfEntity entity) {
+        return entity.getTextureId();
     }
 }
