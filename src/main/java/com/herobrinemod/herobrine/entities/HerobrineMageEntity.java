@@ -1,6 +1,7 @@
 package com.herobrinemod.herobrine.entities;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -23,6 +24,7 @@ public class HerobrineMageEntity extends HerobrineEntity {
     private int holdCastingCounter;
     private int holdTicks;
     private boolean startedHold;
+    private int strikeCastingCounter;
 
     public HerobrineMageEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
@@ -30,6 +32,7 @@ public class HerobrineMageEntity extends HerobrineEntity {
         this.weakenCastingCounter = random.nextBetween(100, 400);
         this.warpCastingCounter = random.nextBetween(90, 550);
         this.holdCastingCounter = random.nextBetween(150, 600);
+        this.strikeCastingCounter = random.nextBetween(80, 650);
         this.holdTicks = random.nextBetween(35, 65);
         this.experiencePoints = 5;
     }
@@ -68,6 +71,7 @@ public class HerobrineMageEntity extends HerobrineEntity {
         nbt.putInt("WarpCastingInterval", this.warpCastingCounter);
         nbt.putInt("WeakenCastingInterval", this.weakenCastingCounter);
         nbt.putInt("HoldCastingInterval", this.holdCastingCounter);
+        nbt.putInt("StrikeCastingInterval", this.strikeCastingCounter);
         nbt.putInt("HoldTicks", this.holdTicks);
         nbt.putBoolean("StartedHold", this.startedHold);
     }
@@ -79,6 +83,7 @@ public class HerobrineMageEntity extends HerobrineEntity {
         this.warpCastingCounter = nbt.getInt("WarpCastingInterval");
         this.weakenCastingCounter = nbt.getInt("WeakenCastingInterval");
         this.holdCastingCounter = nbt.getInt("HoldCastingInterval");
+        this.strikeCastingCounter = nbt.getInt("StrikeCastingInterval");
         this.holdTicks = nbt.getInt("HoldTicks");
         this.startedHold =  nbt.getBoolean("StartedHold");
     }
@@ -145,6 +150,16 @@ public class HerobrineMageEntity extends HerobrineEntity {
                 }
             }
             --this.holdCastingCounter;
+
+            if (this.strikeCastingCounter < 1) {
+                LightningEntity lightningentity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+                assert lightningentity != null;
+                lightningentity.setPos(this.getTarget().getX(), this.getTarget().getY(), this.getTarget().getZ());
+                this.getWorld().spawnEntity(lightningentity);
+                this.getWorld().sendEntityStatus(this, (byte) 4);
+                this.strikeCastingCounter = random.nextBetween(80, 650);
+            }
+            --this.strikeCastingCounter;
         }
     }
 
