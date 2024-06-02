@@ -54,4 +54,5 @@ public class ItemList {
     public static final SpawnEggItem SURVIVOR_SPAWN_EGG = new SpawnEggItem(EntityTypeList.SURVIVOR, 0x46B59C, 0xCEAC90, new Item.Settings());
     public static final SpawnEggItem INFECTED_AXOLOTL_SPAWN_EGG = new SpawnEggItem(EntityTypeList.INFECTED_AXOLOTL, 0xFBC1E3, 0xFFFFFF, new Item.Settings());
     public static final SpawnEggItem INFECTED_CAMEL_SPAWN_EGG = new SpawnEggItem(EntityTypeList.INFECTED_CAMEL, 0xFCC369, 0xFFFFFF, new Item.Settings());
+    public static final SpawnEggItem INFECTED_ARMADILLO_SPAWN_EGG = new SpawnEggItem(EntityTypeList.INFECTED_ARMADILLO, 0xAD716D, 0xFFFFFF, new Item.Settings());
 }

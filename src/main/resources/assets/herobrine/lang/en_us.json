@@ -68,5 +68,7 @@
   "item.herobrine.infected_axolotl_spawn_egg": "Infected Axolotl Spawn Egg",
   "entity.herobrine.infected_camel": "Infected Camel",
   "item.herobrine.infected_camel_spawn_egg": "Infected Camel Spawn Egg",
+  "entity.herobrine.infected_armadillo": "Infected Armadillo",
+  "item.herobrine.infected_armadillo_spawn_egg": "Infected Armadillo Spawn Egg",
   "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine"
 }
