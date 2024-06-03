@@ -10,7 +10,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.model.Dilation;
+import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.model.OcelotEntityModel;
 import net.minecraft.entity.EntityType;
 
 @Environment(EnvType.CLIENT)
@@ -37,6 +39,7 @@ public class HerobrineClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(HerobrineModelLayers.INFECTED_AXOLOTL_MODEL_LAYER, InfectedAxolotlEntityModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(HerobrineModelLayers.INFECTED_CAMEL_MODEL_LAYER, InfectedCamelEntityModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(HerobrineModelLayers.INFECTED_ARMADILLO_MODEL_LAYER, InfectedArmadilloEntityModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(HerobrineModelLayers.INFECTED_OCELOT_MODEL_LAYER, () -> TexturedModelData.of(OcelotEntityModel.getModelData(Dilation.NONE), 64, 32));
         EntityRendererRegistry.register(EntityTypeList.HEROBRINE_WARRIOR, HerobrineEntityRenderer::new);
         EntityRendererRegistry.register(EntityTypeList.HEROBRINE_SPY, HerobrineEntityRenderer::new);
         EntityRendererRegistry.register(EntityTypeList.HEROBRINE_MAGE, HerobrineMageEntityRenderer::new);
@@ -62,5 +65,6 @@ public class HerobrineClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityTypeList.INFECTED_AXOLOTL, InfectedAxolotlEntityRenderer::new);
         EntityRendererRegistry.register(EntityTypeList.INFECTED_CAMEL, InfectedCamelEntityRenderer::new);
         EntityRendererRegistry.register(EntityTypeList.INFECTED_ARMADILLO, InfectedArmadilloEntityRenderer::new);
+        EntityRendererRegistry.register(EntityTypeList.INFECTED_OCELOT, InfectedOcelotEntityRenderer::new);
     }
 }
