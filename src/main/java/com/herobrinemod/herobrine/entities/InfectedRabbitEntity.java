@@ -109,7 +109,7 @@ public class InfectedRabbitEntity extends InfectedEntity implements VariantHolde
     }
 
     @Override
-    protected void jump() {
+    public void jump() {
         super.jump();
         double d = this.moveControl.getSpeed();
         if (d > 0.0 && this.getVelocity().horizontalLengthSquared() < 0.01) {
