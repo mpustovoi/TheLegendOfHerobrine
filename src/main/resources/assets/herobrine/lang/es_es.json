@@ -1,4 +1,5 @@
 {
+  "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine",
   "item.herobrine.bedrock_sword": "Espada de Piedra Base",
   "item.herobrine.herobrine_warrior_spawn_egg": "Generar Herobrine Guerrero",
   "block.herobrine.herobrine_altar": "Altar de Herobrine",
@@ -63,5 +64,15 @@
   "jukebox_song.herobrine.dog": "C418 - dog",
   "herobrine.summon": "<Herobrine> ¡No tienes idea de lo que has hecho!",
   "herobrine.unsummon": "<Herobrine> ¡Voy a volver!",
-  "item.herobrine.cursed_diamond_sword.kills": "Matar:"
+  "item.herobrine.cursed_diamond_sword.kills": "Matar:",
+  "entity.herobrine.infected_axolotl": "Axolotl Infectado",
+  "item.herobrine.infected_axolotl_spawn_egg": "Generar Axolotl Infectado",
+  "entity.herobrine.infected_camel": "Camello Infectado",
+  "item.herobrine.infected_camel_spawn_egg": "Generar Camello Infectado",
+  "entity.herobrine.infected_armadillo": "Armadillo Infectado",
+  "item.herobrine.infected_armadillo_spawn_egg": "Genrar Armadillo Infectado",
+  "entity.herobrine.infected_ocelot": "Ocelote Infectado",
+  "item.herobrine.infected_ocelot_spawn_egg": "Genrar Ocelote Infectado",
+  "entity.herobrine.infected_fox": "Zorro Infectado",
+  "item.herobrine.infected_fox_spawn_egg": "Genrar Zorro Infectado"
 }

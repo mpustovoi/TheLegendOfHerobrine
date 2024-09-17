@@ -1,4 +1,5 @@
 {
+  "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine",
   "item.herobrine.bedrock_sword": "基岩剑",
   "item.herobrine.herobrine_warrior_spawn_egg": "Herobrine战士刷怪蛋",
   "block.herobrine.herobrine_altar": "Herobrine祭坛",
@@ -63,5 +64,15 @@
   "jukebox_song.herobrine.dog": "C418 - dog",
   "herobrine.summon": "<Herobrine> 你根本不知道自己做了什么！",
   "herobrine.unsummon": "<Herobrine> 我会回来的！",
-  "item.herobrine.cursed_diamond_sword.kills": "击杀:"
+  "item.herobrine.cursed_diamond_sword.kills": "击杀:",
+  "entity.herobrine.infected_axolotl": "受感染的轴龙",
+  "item.herobrine.infected_axolotl_spawn_egg": "受感染的轴龙产卵",
+  "entity.herobrine.infected_camel": "受感染的骆驼",
+  "item.herobrine.infected_camel_spawn_egg": "受感染的骆驼产卵",
+  "entity.herobrine.infected_armadillo": "受感染的犰狳",
+  "item.herobrine.infected_armadillo_spawn_egg": "受感染的犰狳卵",
+  "entity.herobrine.infected_ocelot": "受感染的猫鼬",
+  "item.herobrine.infected_ocelot_spawn_egg": "受感染的猫鼬卵",
+  "entity.herobrine.infected_fox": "受感染的狐狸",
+  "item.herobrine.infected_fox_spawn_egg": "受感染的狐狸卵"
 }
