@@ -1,4 +1,5 @@
 {
+  "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine",
   "item.herobrine.bedrock_sword": "Bedrock Sword",
   "item.herobrine.herobrine_warrior_spawn_egg": "Herobrine Warrior Spawn Egg",
   "block.herobrine.herobrine_altar": "Altar of Herobrine",
@@ -68,5 +69,10 @@
   "item.herobrine.infected_axolotl_spawn_egg": "Infected Axolotl Spawn Egg",
   "entity.herobrine.infected_camel": "Infected Camel",
   "item.herobrine.infected_camel_spawn_egg": "Infected Camel Spawn Egg",
-  "tag.item.herobrine.activates_herobrine_altar": "Activates Altar of Herobrine"
+  "entity.herobrine.infected_armadillo": "Infected Armadillo",
+  "item.herobrine.infected_armadillo_spawn_egg": "Infected Armadillo Spawn Egg",
+  "entity.herobrine.infected_ocelot": "Infected Ocelot",
+  "item.herobrine.infected_ocelot_spawn_egg": "Infected Ocelot Spawn Egg",
+  "entity.herobrine.infected_fox": "Infected Fox",
+  "item.herobrine.infected_fox_spawn_egg": "Infected Fox Spawn Egg"
 }
