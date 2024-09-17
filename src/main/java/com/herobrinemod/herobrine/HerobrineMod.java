@@ -177,7 +177,7 @@ public class HerobrineMod implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_RABBIT_SPAWN_EGG, ItemList.INFECTED_AXOLOTL_SPAWN_EGG));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_AXOLOTL_SPAWN_EGG, ItemList.INFECTED_CAMEL_SPAWN_EGG));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_CAMEL_SPAWN_EGG, ItemList.INFECTED_ARMADILLO_SPAWN_EGG));
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_ARMADILLO_SPAWN_EGG, ItemList.INFECTED_OCELOT_SPAWN_EGG));;
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_ARMADILLO_SPAWN_EGG, ItemList.INFECTED_OCELOT_SPAWN_EGG));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(content -> content.addAfter(ItemList.INFECTED_OCELOT_SPAWN_EGG, ItemList.SURVIVOR_SPAWN_EGG));
     }
 
