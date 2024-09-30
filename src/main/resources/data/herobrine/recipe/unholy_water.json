@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "cursed_diamond",
   "pattern": [
     "AAA",
     "ABA",
@@ -12,11 +11,12 @@
       "item": "herobrine:cursed_dust"
     },
     "B": {
-      "item": "minecraft:diamond"
+      "item": "herobrine:holy_water"
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond"
+    "id": "herobrine:unholy_water",
+    "count": 1
   },
   "show_notification": true
 }

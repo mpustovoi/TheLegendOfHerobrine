@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
+  "category": "equipment",
   "pattern": [
     "AAA",
-    "AAA",
-    "AAA"
+    "A A"
   ],
   "key": {
     "A": {
-      "item": "herobrine:purified_diamond"
+      "item": "herobrine:cursed_diamond"
     }
   },
   "result": {
-    "item": "herobrine:purified_diamond_block"
+    "id": "herobrine:cursed_diamond_helmet",
+    "count": 1
   },
   "show_notification": true
 }

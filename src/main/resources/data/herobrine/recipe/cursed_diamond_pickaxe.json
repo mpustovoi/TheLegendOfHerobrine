@@ -3,15 +3,20 @@
   "category": "equipment",
   "pattern": [
     "AAA",
-    "A A"
+    " B ",
+    " B "
   ],
   "key": {
     "A": {
       "item": "herobrine:cursed_diamond"
+    },
+    "B": {
+      "item": "minecraft:stick"
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond_helmet"
+    "id": "herobrine:cursed_diamond_pickaxe",
+    "count": 1
   },
   "show_notification": true
 }

@@ -2,20 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [
-    "AAA",
-    " B ",
-    " B "
+    "A A",
+    "A A"
   ],
   "key": {
     "A": {
       "item": "herobrine:cursed_diamond"
-    },
-    "B": {
-      "item": "minecraft:stick"
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond_pickaxe"
+    "id": "herobrine:cursed_diamond_boots",
+    "count": 1
   },
   "show_notification": true
 }

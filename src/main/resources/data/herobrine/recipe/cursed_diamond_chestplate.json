@@ -1,21 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "equipment",
   "pattern": [
+    "A A",
     "AAA",
-    "ABA",
     "AAA"
   ],
   "key": {
     "A": {
-      "item": "herobrine:cursed_dust"
-    },
-    "B": {
-      "item": "herobrine:holy_water"
+      "item": "herobrine:cursed_diamond"
     }
   },
   "result": {
-    "item": "herobrine:unholy_water"
+    "id": "herobrine:cursed_diamond_chestplate",
+    "count": 1
   },
   "show_notification": true
 }

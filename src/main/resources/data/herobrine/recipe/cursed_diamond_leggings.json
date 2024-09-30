@@ -12,7 +12,8 @@
         }
     },
     "result": {
-        "item": "herobrine:cursed_diamond_leggings"
+        "id": "herobrine:cursed_diamond_leggings",
+        "count": 1
     },
     "show_notification": true
 }

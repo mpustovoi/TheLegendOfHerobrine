@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [
-    "A",
-    "B",
-    "B"
+    "AA",
+    "AB",
+    " B"
   ],
   "key": {
     "A": {
@@ -15,7 +15,8 @@
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond_shovel"
+    "id": "herobrine:cursed_diamond_axe",
+    "count": 1
   },
   "show_notification": true
 }

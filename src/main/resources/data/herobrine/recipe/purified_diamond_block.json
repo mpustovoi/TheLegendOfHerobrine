@@ -8,11 +8,12 @@
   ],
   "key": {
     "A": {
-      "item": "herobrine:cursed_diamond"
+      "item": "herobrine:purified_diamond"
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond_block"
+    "id": "herobrine:purified_diamond_block",
+    "count": 1
   },
   "show_notification": true
 }

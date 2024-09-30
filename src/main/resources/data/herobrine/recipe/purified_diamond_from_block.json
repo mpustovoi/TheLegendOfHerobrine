@@ -4,14 +4,12 @@
   "group": "purified_diamond",
   "ingredients": [
     {
-      "item": "herobrine:cursed_diamond"
-    },
-    {
-      "item": "herobrine:holy_water"
+      "item": "herobrine:purified_diamond_block"
     }
   ],
   "result": {
-    "item": "herobrine:purified_diamond"
+    "id": "herobrine:purified_diamond",
+    "count": 9
   },
   "show_notification": true
 }

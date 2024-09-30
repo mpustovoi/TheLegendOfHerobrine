@@ -31,7 +31,7 @@
     }
   ],
   "result": {
-    "item": "herobrine:holy_water",
+    "id": "herobrine:holy_water",
     "count": 1
   },
   "show_notification": true

@@ -15,7 +15,8 @@
     }
   },
   "result": {
-    "item": "herobrine:herobrine_statue"
+    "id": "herobrine:herobrine_statue",
+    "count": 1
   },
   "show_notification": true
 }

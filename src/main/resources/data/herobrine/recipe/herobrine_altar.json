@@ -18,7 +18,8 @@
     }
   },
   "result": {
-    "item": "herobrine:herobrine_altar"
+    "id": "herobrine:herobrine_altar",
+    "count": 1
   },
   "show_notification": true
 }

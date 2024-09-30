@@ -1,21 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "category": "building",
   "pattern": [
-    "AA",
-    " B",
-    " B"
+    "AAA",
+    "AAA",
+    "AAA"
   ],
   "key": {
     "A": {
       "item": "herobrine:cursed_diamond"
-    },
-    "B": {
-      "item": "minecraft:stick"
     }
   },
   "result": {
-    "item": "herobrine:cursed_diamond_hoe"
+    "id": "herobrine:cursed_diamond_block",
+    "count": 1
   },
   "show_notification": true
 }
