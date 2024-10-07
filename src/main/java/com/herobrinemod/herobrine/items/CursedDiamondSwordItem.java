@@ -62,7 +62,7 @@ public class CursedDiamondSwordItem extends SwordItem {
     @Override
     public TypedActionResult<ItemStack> use(@NotNull World world, @NotNull PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if((user.isCreative() || this.getKills(itemStack) >= ConfigHandler.getHerobrineConfig().readInt("CursedDiamondSwordChargeCost")) && !user.isSneaking()) {
+        if((user.isCreative() || this.getKills(itemStack) >= ConfigHandler.getHerobrineConfig().readInt("CursedDiamondSwordChargeCost")) && user.isSneaking()) {
             if(!user.isSilent()) {
                 world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, SoundCategory.PLAYERS, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
             }

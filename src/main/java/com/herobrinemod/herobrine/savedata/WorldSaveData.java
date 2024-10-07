@@ -17,6 +17,7 @@ public class WorldSaveData {
     private JsonObject json; // Allows loading the json data file to memory
     private final String fileName; // Store the name of the Json file
     private final String jsonPath;
+    private boolean dirty;
     public WorldSaveData(@NotNull MinecraftServer server, String fileName) {
         this.fileName = fileName;
         String path = Objects.requireNonNull(server).getSavePath(WorldSavePath.ROOT).toString();
@@ -58,12 +59,19 @@ public class WorldSaveData {
             json = new JsonObject();
         }
         json.addProperty(dataName, dataValue);
-        try {
-            Files.write(Paths.get(jsonPath), json.toString().getBytes());
-        } catch (IOException e) {
-            System.out.println("[The Legend of Herobrine/Save Data/ERROR]: Integer \"" + dataName + "\" Could not be written!");
-            e.printStackTrace();
+        this.dirty = true;
+    }
+    public void writeInt(String dataName, int dataValue, boolean saveNow) {
+        if(json == null) {
+            json = new JsonObject();
         }
+        json.addProperty(dataName, dataValue);
+
+        if(saveNow) {
+            saveFile();
+            return;
+        }
+        this.dirty = true;
     }
 
     // Write double value to json file
@@ -72,12 +80,19 @@ public class WorldSaveData {
             json = new JsonObject();
         }
         json.addProperty(dataName, dataValue);
-        try {
-            Files.write(Paths.get(jsonPath), json.toString().getBytes());
-        } catch (IOException e) {
-            System.out.println("[The Legend of Herobrine/Save Data/ERROR]: Double \"" + dataName + "\" Could not be written!");
-            e.printStackTrace();
+        this.dirty = true;
+    }
+    public void writeDouble(String dataName, double dataValue, boolean saveNow) {
+        if(json == null) {
+            json = new JsonObject();
         }
+        json.addProperty(dataName, dataValue);
+
+        if(saveNow) {
+            saveFile();
+            return;
+        }
+        this.dirty = true;
     }
 
     // Write boolean value to json file
@@ -86,12 +101,34 @@ public class WorldSaveData {
             json = new JsonObject();
         }
         json.addProperty(dataName, dataValue);
+        this.dirty = true;
+    }
+    public void writeBoolean(String dataName, boolean dataValue, boolean saveNow) {
+        if(json == null) {
+            json = new JsonObject();
+        }
+        json.addProperty(dataName, dataValue);
+
+        if(saveNow) {
+            saveFile();
+            return;
+        }
+        this.dirty = true;
+    }
+
+    public void saveFile() {
+        this.dirty = false;
         try {
             Files.write(Paths.get(jsonPath), json.toString().getBytes());
         } catch (IOException e) {
-            System.out.println("[The Legend of Herobrine/Save Data/ERROR]: Boolean \"" + dataName + "\" Could not be written!");
+            System.out.println("[The Legend of Herobrine/Save Data/ERROR]: Failed to save data to JSON file!");
             e.printStackTrace();
+            this.dirty = true;
         }
+    }
+
+    public boolean isDirty() {
+        return dirty;
     }
 
     // Get Json file in memory

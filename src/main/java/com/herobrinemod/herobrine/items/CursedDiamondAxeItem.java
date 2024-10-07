@@ -25,7 +25,7 @@ public class CursedDiamondAxeItem extends AxeItem {
     @Override
     public TypedActionResult<ItemStack> use(@NotNull World world, @NotNull PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if(!user.isSneaking()) {
+        if(user.isSneaking()) {
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigHandler.getHerobrineConfig().readInt("CursedDiamondAxeEffectsDurationTicks"), 1, false, false, true));
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, ConfigHandler.getHerobrineConfig().readInt("CursedDiamondAxeEffectsDurationTicks"), 0, false, false, true));
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, ConfigHandler.getHerobrineConfig().readInt("CursedDiamondAxeEffectsDurationTicks"), 0, false, false, true));

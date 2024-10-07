@@ -132,7 +132,7 @@ public class HerobrineAltarBlock extends Block implements Waterloggable {
                         assert lightningentity != null;
                         lightningentity.setPos(pos.getX(), pos.getY(), pos.getZ());
                         world.spawnEntity(lightningentity);
-                        SaveDataHandler.getHerobrineSaveData().writeBoolean("herobrineSummoned", true);
+                        SaveDataHandler.getHerobrineSaveData().writeBoolean("herobrineSummoned", true, true);
                     }
                 }
 
@@ -151,9 +151,9 @@ public class HerobrineAltarBlock extends Block implements Waterloggable {
                         assert lightningentity != null;
                         lightningentity.setPos(pos.getX(), pos.getY(), pos.getZ());
                         world.spawnEntity(lightningentity);
-                        SaveDataHandler.getHerobrineSaveData().writeBoolean("herobrineSummoned", false);
-                        SaveDataHandler.getHerobrineSaveData().writeInt("stage", 0);
-                        SaveDataHandler.getHerobrineSaveData().writeInt("stageTime", 0);
+                        SaveDataHandler.getHerobrineSaveData().writeBoolean("herobrineSummoned", false, true);
+                        SaveDataHandler.getHerobrineSaveData().writeInt("stage", 0, true);
+                        SaveDataHandler.getHerobrineSaveData().writeInt("stageTime", 0, true);
                     }
                 }
             }

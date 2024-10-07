@@ -18,6 +18,9 @@ public class SaveDataHandler { // Class to handle save data on a per-world basis
 
     // Unload all save data for a world when the server stops
     public static void handleServerStop(MinecraftServer ignored) {
+        if(herobrineSaveData.isDirty()) {
+            herobrineSaveData.saveFile();
+        }
         herobrineSaveData = null;
     }
 }
